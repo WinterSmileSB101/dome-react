@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import path from 'path';
+import { argv } from 'yargs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import WebpackBar from 'webpackbar';
@@ -8,6 +9,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
+import AssetsPlugin from 'assets-webpack-plugin';
 
 import { UnionWebpackConfigWithDevelopmentServer } from '../types';
 
@@ -121,33 +123,33 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
         },
     },
     output: {
-        path: path.resolve(PROJECT_PATH, './dist/static/scripts/'),
-        filename: `[name].${IS_DEV ? '' : '[hash:8].'}js`,
+        path: path.resolve(PROJECT_PATH, `./dist/${IS_DEV ? 'development' : 'publish'}`),
+        filename: `static/scripts/[name].${IS_DEV ? '' : '[contenthash:8].'}js`,
     },
     plugins: [
         ...WebpackConfig.fixedPlugins,
         new HardSourceWebpackPlugin(), //only use in dev environment
-        new HtmlWebpackPlugin({
-            template: path.resolve(PROJECT_PATH, './public/index.html'),
-            filename: 'index.html',
-            cache: false,
-            minify: IS_DEV
-                ? false
-                : {
-                      removeAttributeQuotes: true,
-                      collapseWhitespace: true,
-                      removeComments: true,
-                      collapseBooleanAttributes: true,
-                      collapseInlineTagWhitespace: true,
-                      removeRedundantAttributes: true,
-                      removeScriptTypeAttributes: true,
-                      removeStyleLinkTypeAttributes: true,
-                      minifyCSS: true,
-                      minifyJS: true,
-                      minifyURLs: true,
-                      useShortDoctype: true,
-                  },
-        }),
+        // new HtmlWebpackPlugin({
+        //     template: path.resolve(PROJECT_PATH, './public/index.html'),
+        //     filename: 'index.html',
+        //     cache: false,
+        //     minify: IS_DEV
+        //         ? false
+        //         : {
+        //               removeAttributeQuotes: true,
+        //               collapseWhitespace: true,
+        //               removeComments: true,
+        //               collapseBooleanAttributes: true,
+        //               collapseInlineTagWhitespace: true,
+        //               removeRedundantAttributes: true,
+        //               removeScriptTypeAttributes: true,
+        //               removeStyleLinkTypeAttributes: true,
+        //               minifyCSS: true,
+        //               minifyJS: true,
+        //               minifyURLs: true,
+        //               useShortDoctype: true,
+        //           },
+        // }),
         new CopyPlugin({
             patterns: [
                 {
@@ -158,6 +160,34 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
                 },
             ],
             // copyUnmodified: true,
+        }),
+        new AssetsPlugin({
+            path: path.resolve(PROJECT_PATH, './dist/conf/'),
+            filename: 'scripts.mapping.json',
+            processOutput: function (mapping) {
+                const scripts = {};
+                for (let key in mapping) {
+                    if (!!mapping[key]?.js) {
+                        scripts[key] = { js: mapping[key]?.js };
+                    }
+                }
+
+                return `${JSON.stringify(scripts, null, 2)}`;
+            },
+        }),
+        new AssetsPlugin({
+            path: path.resolve(PROJECT_PATH, './dist/conf/'),
+            filename: 'styles.mapping.json',
+            processOutput: function (mapping) {
+                const scripts = {};
+                for (let key in mapping) {
+                    if (!!mapping[key]?.css) {
+                        scripts[key] = { css: mapping[key]?.css };
+                    }
+                }
+
+                return `${JSON.stringify(scripts, null, 2)}`;
+            },
         }),
         new WebpackBar({
             name: IS_DEV ? 'Starting' : 'Packaging',
@@ -189,7 +219,6 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
             minChunks: 1,
             maxAsyncRequests: 5,
             maxInitialRequests: 3,
-            name: 'true',
             automaticNameDelimiter: '~',
             cacheGroups: {
                 vendors: {

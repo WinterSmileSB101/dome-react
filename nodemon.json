@@ -1,0 +1,7 @@
+{
+    "env": {
+        "__DEV__": true
+    },
+    "watch": ["dist/development/server"],
+    "exec": "node --inspect dist/development/server/modules/app.server.js"
+}
