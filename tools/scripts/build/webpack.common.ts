@@ -17,7 +17,7 @@ import AllConst, { WebpackConfig } from '../const';
 import AllUtils, { getConfig } from '../utils';
 import { PageMapping } from './config/config.type';
 
-const { PROJECT_PATH, IS_DEV } = AllConst.ProjectConfig;
+const { PROJECT_PATH } = AllConst.ProjectConfig;
 
 const { getCssLoader } = AllUtils.WebpackUtils;
 
@@ -40,6 +40,8 @@ const chunks = getEntry();
 
 console.log(chunks);
 
+const IsDev = argv['dev'];
+
 const config: UnionWebpackConfigWithDevelopmentServer = {
     mode: 'production',
     entry: chunks,
@@ -53,7 +55,7 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
                     {
                         loader: 'sass-loader',
                         options: {
-                            sourceMap: IS_DEV,
+                            sourceMap: IsDev,
                         },
                     },
                 ],
@@ -65,7 +67,7 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
                     {
                         loader: 'less-loader',
                         options: {
-                            sourceMap: IS_DEV,
+                            sourceMap: IsDev,
                         },
                     },
                 ],
@@ -123,8 +125,8 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
         },
     },
     output: {
-        path: path.resolve(PROJECT_PATH, `./dist/${IS_DEV ? 'development' : 'publish'}`),
-        filename: `static/scripts/[name].${IS_DEV ? '' : '[contenthash:8].'}js`,
+        path: path.resolve(PROJECT_PATH, `./dist/${IsDev ? 'development' : 'publish'}`),
+        filename: `static/scripts/[name].${IsDev ? '' : '[contenthash:8].'}js`,
     },
     plugins: [
         ...WebpackConfig.fixedPlugins,
@@ -155,7 +157,7 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
                 {
                     context: path.resolve(PROJECT_PATH, './static/assets'),
                     from: '*',
-                    to: path.resolve(PROJECT_PATH, './dist/static/assets'),
+                    to: path.resolve(PROJECT_PATH, `./dist/${IsDev ? 'development' : 'publish'}/static/assets`),
                     toType: 'dir',
                 },
             ],
@@ -190,7 +192,7 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
             },
         }),
         new WebpackBar({
-            name: IS_DEV ? 'Starting' : 'Packaging',
+            name: IsDev ? 'Starting' : 'Packaging',
             color: '#fa8c16',
         }),
         new CircularDependencyPlugin({
@@ -202,16 +204,16 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
         }),
     ],
     optimization: {
-        minimize: !IS_DEV,
+        minimize: !IsDev,
         minimizer: [
-            !IS_DEV &&
+            !IsDev &&
                 new TerserPlugin({
                     extractComments: false,
                     terserOptions: {
                         compress: { pure_funcs: ['console.log'] },
                     },
                 }),
-            !IS_DEV && new OptimizeCssAssetsPlugin(),
+            !IsDev && new OptimizeCssAssetsPlugin(),
         ].filter(Boolean),
         splitChunks: {
             chunks: 'all',
