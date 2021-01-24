@@ -8,7 +8,6 @@ import WebpackBar from 'webpackbar';
 import TerserPlugin from 'terser-webpack-plugin';
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
-import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
 import AssetsPlugin from 'assets-webpack-plugin';
 
 import { UnionWebpackConfigWithDevelopmentServer } from '../types';
@@ -38,7 +37,7 @@ const getEntry = (): PageMapping => {
 
 const chunks = getEntry();
 
-console.log(chunks);
+// console.log(chunks);
 
 const IsDev = argv['dev'];
 
@@ -126,11 +125,10 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
     },
     output: {
         path: path.resolve(PROJECT_PATH, `./dist/${IsDev ? 'development' : 'publish'}`),
-        filename: `static/scripts/[name].${IsDev ? '' : '[contenthash:8].'}js`,
+        filename: `static/scripts/[name].${IsDev ? '' : '[contenthash].'}js`,
     },
     plugins: [
         ...WebpackConfig.fixedPlugins,
-        new HardSourceWebpackPlugin(), //only use in dev environment
         // new HtmlWebpackPlugin({
         //     template: path.resolve(PROJECT_PATH, './public/index.html'),
         //     filename: 'index.html',
@@ -163,34 +161,6 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
             ],
             // copyUnmodified: true,
         }),
-        new AssetsPlugin({
-            path: path.resolve(PROJECT_PATH, './dist/conf/'),
-            filename: 'scripts.mapping.json',
-            processOutput: function (mapping) {
-                const scripts = {};
-                for (let key in mapping) {
-                    if (!!mapping[key]?.js) {
-                        scripts[key] = { js: mapping[key]?.js };
-                    }
-                }
-
-                return `${JSON.stringify(scripts, null, 2)}`;
-            },
-        }),
-        new AssetsPlugin({
-            path: path.resolve(PROJECT_PATH, './dist/conf/'),
-            filename: 'styles.mapping.json',
-            processOutput: function (mapping) {
-                const scripts = {};
-                for (let key in mapping) {
-                    if (!!mapping[key]?.css) {
-                        scripts[key] = { css: mapping[key]?.css };
-                    }
-                }
-
-                return `${JSON.stringify(scripts, null, 2)}`;
-            },
-        }),
         new WebpackBar({
             name: IsDev ? 'Starting' : 'Packaging',
             color: '#fa8c16',
@@ -216,16 +186,19 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
             !IsDev && new OptimizeCssAssetsPlugin(),
         ].filter(Boolean),
         splitChunks: {
-            chunks: 'all',
+            chunks: 'initial',
             minSize: 20000,
             minChunks: 1,
-            maxAsyncRequests: 5,
-            maxInitialRequests: 3,
+            maxAsyncRequests: 7,
+            maxInitialRequests: 4,
+            name: true,
             automaticNameDelimiter: '~',
             cacheGroups: {
                 vendors: {
                     test: /[/\\]node_modules[/\\]/,
-                    priority: -10,
+                    minChunks: 2,
+                    priority: -5,
+                    name: 'vendors',
                 },
                 default: {
                     minChunks: 2,

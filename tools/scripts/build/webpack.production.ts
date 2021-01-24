@@ -4,7 +4,8 @@ import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 import glob from 'glob-all';
 import PurgeCSSPlugin from 'purgecss-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+// import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import AssetsPlugin from 'assets-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import common from './webpack.common';
@@ -18,6 +19,34 @@ const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common,
     mode: 'production',
     plugins: [
         ...WebpackConfig.fixedPlugins,
+        new AssetsPlugin({
+            path: path.resolve(PROJECT_PATH, './dist/publish/conf'),
+            filename: 'scripts.mapping.json',
+            processOutput: function (mapping) {
+                const scripts = {};
+                for (let key in mapping) {
+                    if (!!mapping[key]?.js) {
+                        scripts[key] = { js: mapping[key]?.js };
+                    }
+                }
+
+                return `${JSON.stringify(scripts, null, 2)}`;
+            },
+        }),
+        new AssetsPlugin({
+            path: path.resolve(PROJECT_PATH, './dist/conf'),
+            filename: 'styles.mapping.json',
+            processOutput: function (mapping) {
+                const scripts = {};
+                for (let key in mapping) {
+                    if (!!mapping[key]?.css) {
+                        scripts[key] = { css: mapping[key]?.css };
+                    }
+                }
+
+                return `${JSON.stringify(scripts, null, 2)}`;
+            },
+        }),
         new PurgeCSSPlugin({
             paths: glob.sync(
                 [
@@ -37,13 +66,13 @@ const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common,
             banner:
                 '/** @preserve Powered by react-ts-quick-starter (https://github.com/vortesnail/react-ts-quick-starter) */',
         }),
-        new BundleAnalyzerPlugin({
-            // analyzerMode: "", // 开一个本地服务查看报告
-            // analyzerHost: 'localhost', // host 设置
-            // analyzerPort: 9628, // 端口号设置
-            analyzerMode: 'static', // static mode
-            reportFilename: './dist/analyzer/report.html',
-        }),
+        // new BundleAnalyzerPlugin({
+        //     // analyzerMode: "", // 开一个本地服务查看报告
+        //     // analyzerHost: 'localhost', // host 设置
+        //     // analyzerPort: 9628, // 端口号设置
+        //     analyzerMode: 'static', // static mode
+        //     reportFilename: './dist/analyzer/report.html',
+        // }),
     ],
 });
 

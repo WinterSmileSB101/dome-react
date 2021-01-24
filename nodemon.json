@@ -2,6 +2,10 @@
     "env": {
         "__DEV__": true
     },
-    "watch": ["dist/development/server"],
-    "exec": "node --inspect dist/development/server/modules/app.server.js"
+    "restartable": "rs",
+    "verbose": false,
+    "delay": "2000",
+    "watch": ["dist/development/server/"],
+    "exec": "node --inspect dist/development/server/modules/app.server.js",
+    "ext": "js json"
 }

@@ -1,12 +1,17 @@
-const { series } = require('gulp');
-const { clean } = require('./tools/task/clean');
-const { compileTS } = require('./tools/task/buildServer');
-const { compileClient, compileClientProd } = require('./tools/task/buildClient');
+import { parallel, series } from 'gulp';
+
+import { cleanDist } from './tools/task/clean';
+import serverTask from './tools/task/buildServer';
+import clientTask from './tools/task/buildClient';
+import configTask from './tools/task/buildConfig';
 
 module.exports = {
-    clean,
-    ['server']: compileTS,
-    ['client']: compileClient,
+    clean: cleanDist,
+    buildConfig: configTask.buildConfig,
+    'build:server': serverTask.compileTS,
+    'watch:server': serverTask.watchToCompileTS,
+    'build:client': clientTask.compileClient,
 };
 
-module.exports.default = compileTS;
+// exports.server = series(compileTS, buildConfig);
+// exports['watch:server'] = watchToCompileTS;

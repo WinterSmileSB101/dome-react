@@ -1,8 +1,22 @@
+import { isArray, isFunction } from 'lodash';
 import del from 'delete';
+import { remove } from 'fs-extra';
 
-function clean(done) {
+function cleanDist(done) {
     del(['dist/**/*']);
     done();
 }
 
-exports.clean = clean;
+const cleanDir = (dir: string | string[]) => (done?) => {
+    if (isArray(dir)) {
+        dir?.forEach((d) => remove(d));
+    } else {
+        remove(dir);
+    }
+
+    if (isFunction(done)) {
+        done();
+    }
+};
+
+export { cleanDir, cleanDist };

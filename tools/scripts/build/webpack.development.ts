@@ -1,16 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { merge } from 'webpack-merge';
+import path from 'path';
+import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
+import AssetsPlugin from 'assets-webpack-plugin';
+
 import common from './webpack.common';
 import { UnionWebpackConfigWithDevelopmentServer } from '../types';
-import proxy from '../../../config/proxy';
 
 import AllConst from '../const';
-import path from 'path';
 
-const { SERVER_HOST, SERVER_PORT } = AllConst.ServerConfig;
 const { PROJECT_PATH, IS_DEV } = AllConst.ProjectConfig;
-
-console.log(IS_DEV);
 
 const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common, {
     devtool: 'eval-source-map',
@@ -19,30 +18,40 @@ const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common,
         path: path.resolve(PROJECT_PATH, `./dist/development`),
         filename: `static/scripts/[name].js`,
     },
-    // output: {
-    //     //path: path.resolve(PROJECT_PATH, `./dist/development`),
-    //     filename: `static/scripts/[name].js`,
-    //     publicPath: `${SERVER_HOST}:${SERVER_PORT}/`,
-    // },
-    // watch: true,
-    // watchOptions: {
-    //     aggregateTimeout: 3000,
-    //     ignored: /node_modules/,
-    // },
-    // devServer: {
-    //     host: SERVER_HOST,
-    //     port: SERVER_PORT,
-    //     //contentBase: '',
-    //     contentBase: 'dist/development/static',
-    //     //contentBasePublicPath: 'dist',
-    //     //publicPath: `/dist`,
-    //     stats: 'errors-only',
-    //     clientLogLevel: 'silent',
-    //     compress: true,
-    //     // open: true,
-    //     hot: true,
-    //     // proxy: { ...proxy },
-    // },
+    plugins: [
+        new HardSourceWebpackPlugin(), //only use in dev environment
+        new AssetsPlugin({
+            path: path.resolve(PROJECT_PATH, './dist/development/server/conf'),
+            filename: 'scripts.mapping.json',
+            processOutput: function (mapping) {
+                const scripts = {};
+                for (let key in mapping) {
+                    if (!!mapping[key]?.js) {
+                        scripts[key] = { js: mapping[key]?.js };
+                    }
+                }
+
+                console.log('build.........scripts');
+
+                return `${JSON.stringify(scripts, null, 2)}`;
+            },
+        }),
+        new AssetsPlugin({
+            path: path.resolve(PROJECT_PATH, './dist/development/server/conf'),
+            filename: 'styles.mapping.json',
+            processOutput: function (mapping) {
+                const scripts = {};
+                for (let key in mapping) {
+                    if (!!mapping[key]?.css) {
+                        scripts[key] = { css: mapping[key]?.css };
+                    }
+                }
+                console.log('build.........styles');
+
+                return `${JSON.stringify(scripts, null, 2)}`;
+            },
+        }),
+    ],
 });
 
 export default developmentConfig;

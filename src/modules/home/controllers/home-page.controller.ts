@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common';
 export class HomePageController {
     @Get('home')
     public async Home() {
-        return 'hahahah';
+        return '55555555555';
     }
 }

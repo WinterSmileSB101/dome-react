@@ -1,17 +1,16 @@
 import gulp, { parallel, series } from 'gulp';
 import ts from 'gulp-typescript';
 import { argv } from 'yargs';
-import WatchClient from 'tsc-watch/client';
-//import replace from 'gulp-replace';
+import configTask from './buildConfig';
 import { castAlias } from '../plugins/gulp';
+//const { buildConfig } = require('./buildConfig');
 
 import AllConst from '../scripts/const';
 import { join } from 'path';
 import { exec, spawnSync } from 'child_process';
-import { sync } from 'glob-all';
-const { PROJECT_PATH, IS_DEV } = AllConst.ProjectConfig;
+const { PROJECT_PATH } = AllConst.ProjectConfig;
 
-const { clean } = require('./clean');
+const { cleanDist } = require('./clean');
 
 const IsDev = argv['dev'];
 
@@ -35,7 +34,7 @@ function compileTS() {
 }
 
 function watchToCompile() {
-    return gulp.watch(compileGlob, series(clean, compileTS));
+    return gulp.watch(compileGlob, compileTS);
 }
 
 async function startNodeServer() {
@@ -57,4 +56,7 @@ async function startNodeServer() {
     }
 }
 
-exports.compileTS = parallel(series(clean, compileTS, startNodeServer), watchToCompile);
+export default {
+    watchToCompileTS: parallel(series(cleanDist, compileTS, configTask.buildConfig, startNodeServer), watchToCompile),
+    compileTS: series(cleanDist, compileTS, configTask.buildConfig),
+};

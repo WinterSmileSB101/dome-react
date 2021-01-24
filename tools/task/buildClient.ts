@@ -1,11 +1,12 @@
 import webpack from 'webpack';
+import log from 'fancy-log';
+import chalk from 'chalk';
 import { argv } from 'yargs';
-import { parallel, series } from 'gulp';
+import { parallel } from 'gulp';
 import prodConfig from '../scripts/build/webpack.production';
 
 import devConfig from '../scripts/build/webpack.development';
 import WebpackDevServer from 'webpack-dev-server';
-import { error } from 'console';
 import AllConst from '../scripts/const';
 
 const { SERVER_HOST, SERVER_PORT } = AllConst.ServerConfig;
@@ -18,26 +19,11 @@ function compileClient() {
     //return require('child_process').execSync(IsDev ? 'yarn watch:client' : 'build:client', { stdio: [0, 1, 2] });
 
     return new Promise(async function (reslove, reject) {
-        console.log('>>>>>>>>>>>>>>>>> build client:', IsDev ? 'dev' : 'prod');
+        log(chalk.green('>>>>>>>>>>>>>>>>> build client:', IsDev ? 'dev' : 'prod'));
         const compiler: webpack.Compiler = webpack(<webpack.Configuration>{
             ...finalConfig,
         });
 
-        compiler.watch(finalConfig.watchOptions, (err, stats) => {
-            if (!!err) {
-                console.error(err.message);
-
-                return;
-            }
-
-            if (!stats?.hasErrors()) {
-                console.log(stats.toString());
-            }
-        });
-
-        reslove(undefined);
-
-        /*
         compiler.run(async function (err, stats) {
             console.log('\x1b[33m%\x1b[0m', 'webpack compile success');
 
@@ -51,25 +37,40 @@ function compileClient() {
 
             const scriptsMapping = stats.compilation.chunkGroups.reduce((rcc, cur) => {
                 rcc[cur.options.name] = cur.chunks.map(({ name, files }) => ({ name, files }));
-                console.log(rcc[cur.options.name]);
 
                 return rcc;
             }, {});
 
-            //console.log(scriptsMapping);
-
             reslove(undefined);
-        });*/
+
+            //console.log(scriptsMapping);
+        });
+
+        if (IsDev) {
+            compiler.watch(finalConfig.watchOptions, (err, stats) => {
+                if (!!err) {
+                    console.error(err.message);
+
+                    return;
+                }
+
+                if (!stats?.hasErrors()) {
+                    console.log(stats.toString());
+                }
+            });
+        }
+        reslove(undefined);
     });
 }
 
 function startStaticServer() {
     return new Promise(async function (reslove, reject) {
-        console.log('>>>>>>>>>>>>>>>>> start static server');
+        log(chalk.green('>>>>>>>>>>>>>>>>> start static server'));
         const compiler: webpack.Compiler = webpack(<webpack.Configuration>{
             ...finalConfig,
         });
 
+        // not catch close event, other wise it's will puts error out.
         new WebpackDevServer(compiler, {
             host: SERVER_HOST,
             port: SERVER_PORT,
@@ -82,16 +83,13 @@ function startStaticServer() {
             compress: true,
             // open: true,
         }).listen(SERVER_PORT, SERVER_HOST, () => {
-            console.log('static server listen on ', SERVER_PORT);
+            log(chalk.green('static server listen on ', SERVER_PORT));
         });
 
         reslove(undefined);
     });
 }
 
-function compileProd() {
-    return require('child_process').execSync('yarn build', { stido: [0, 1, 2] });
-}
-
-exports.compileClient = parallel(compileClient, startStaticServer);
-exports.compileClientProd = compileProd;
+export default {
+    compileClient: IsDev ? parallel(compileClient, startStaticServer) : compileClient,
+};
