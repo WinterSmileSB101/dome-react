@@ -7,13 +7,13 @@ const HomePage: FC = (props) => {
         <>
             <h1>111111111111</h1>
             <p>asdasdasd</p>
-            <textarea
-                style={{
-                    height: 300,
+            <button
+                onClick={() => {
+                    console.log('点上了，鸡冻不');
                 }}
-                id="test"
-                value="asdasd"
-            />
+            >
+                点我
+            </button>
         </>
     );
 };

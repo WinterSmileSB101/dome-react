@@ -1,0 +1,1 @@
+export { ControllerMethod } from './render';

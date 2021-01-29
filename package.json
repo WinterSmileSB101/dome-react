@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "concurrently \"gulp watch:server --dev\" \"gulp build:client --dev\"",
+        "start": "concurrently \"gulp build:client --dev\" \"gulp watch:server --dev\"",
         "release": "concurrently \"gulp build:server\" \"gulp build:client\"",
         "watch:client": "cross-env NODE_ENV=development webpack-dev-server --config ./tools/scripts/build/webpack.development.ts",
         "test": "echo \"Error: no test specified\" && exit 1",

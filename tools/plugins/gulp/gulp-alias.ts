@@ -84,7 +84,13 @@ exports.castAlias = function replaceAlias(alias: { [key: string]: string | strin
                 if (new RegExp(`([from ]|[require(])(["]|['])${path.key}.*["|']`).test(fileContents)) {
                     const pathPrefix = getRelativePath(levels);
 
-                    fileContents = fileContents?.replace(path.key, pathPrefix + path.value);
+                    fileContents = fileContents?.replace(
+                        new RegExp(`(['|"])${path.key}`, 'gi'),
+                        `$1${pathPrefix + path.value}`,
+                    );
+
+                    // console.log('fileContents');
+                    // console.log(fileContents);
                 }
                 // else {
                 //     console.log('not path');
