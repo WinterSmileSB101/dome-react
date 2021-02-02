@@ -1,1 +1,3 @@
-export { RenderReactInterceptor } from './renderHtml';
+import { RenderReactInterceptor } from './renderHtml';
+
+export default RenderReactInterceptor;

@@ -10,7 +10,8 @@ class Timer {
             this.fxNow = undefined;
         });
 
-        return (this.fxNow = Date.now());
+        this.fxNow = Date.now();
+        return this.fxNow;
     }
 
     getFxNow() {

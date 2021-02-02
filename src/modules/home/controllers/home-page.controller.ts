@@ -1,11 +1,11 @@
 import { ReactRootView } from '@libs/server-side/decorators/render';
 import { RenderReactInterceptor } from '@libs/server-side/interceptors';
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
-import HomeView from '../pages/view/home-page';
+import HomeView from '../pages/view/home-page.server';
 
 @Controller()
 @UseInterceptors(RenderReactInterceptor)
-export class HomePageController {
+export default class HomePageController {
     @ReactRootView(HomeView, '')
     @Get('home')
     public async Home() {

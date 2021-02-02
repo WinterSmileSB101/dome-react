@@ -1,7 +1,7 @@
 const trimStart = (str: string, replacedStr?: string) => {
     if (replacedStr?.trim()?.length > 0) {
         if (str?.startsWith(replacedStr)) {
-            return str.substring(replacedStr.length);
+            return str.slice(replacedStr.length);
         }
     } else {
         return str?.trim();
@@ -10,4 +10,4 @@ const trimStart = (str: string, replacedStr?: string) => {
     return str;
 };
 
-export { trimStart };
+export default { trimStart };

@@ -6,8 +6,8 @@ import { NestFactory } from '@nestjs/core';
 
 import { BootstrapOptions } from './bootstrap.interfaces';
 
-export async function bootstrap(rootModule: ModuleMetadata, options?: BootstrapOptions) {
-    let fastifyInstance = fastify({
+export default async function bootstrap(rootModule: ModuleMetadata, options?: BootstrapOptions) {
+    const fastifyInstance = fastify({
         ignoreTrailingSlash: true,
         caseSensitive: false,
     });
@@ -16,7 +16,7 @@ export async function bootstrap(rootModule: ModuleMetadata, options?: BootstrapO
 
     fastifyInstance.addHook('onSend', (request, reply, payload, done) => {
         reply.header('s-site-id', 'default');
-        done(null, payload);
+        done(undefined, payload);
     });
 
     const app = await NestFactory.create<NestFastifyApplication>(rootModule, new FastifyAdapter());

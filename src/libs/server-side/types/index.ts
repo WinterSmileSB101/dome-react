@@ -1,1 +1,1 @@
-export { ControllerMethod } from './render';
+export * from './render';

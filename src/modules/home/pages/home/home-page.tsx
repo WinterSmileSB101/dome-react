@@ -8,6 +8,7 @@ const HomePage: FC = (props) => {
             <h1>111111111111</h1>
             <p>asdasdasd</p>
             <button
+                type="button"
                 onClick={() => {
                     console.log('点上了，鸡冻不');
                 }}
@@ -20,4 +21,4 @@ const HomePage: FC = (props) => {
 
 HomePage.displayName = 'HomePage';
 
-export { HomePage };
+export default { HomePage };
