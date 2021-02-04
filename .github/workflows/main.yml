@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ develop ]
+    branches: [ develop,master ]
   pull_request:
     branches: [ develop ]
 
@@ -32,7 +32,7 @@ jobs:
       # build
       - name: Build
         run: |
-          yarn publish
+          yarn release
       
       # build images
       - name: Docker Image
