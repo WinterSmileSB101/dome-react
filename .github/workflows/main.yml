@@ -33,6 +33,14 @@ jobs:
       - name: Build
         run: |
           yarn release
+      # build 
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-static
+          path: |
+            package.json
+            
       
   # build images
   image:
