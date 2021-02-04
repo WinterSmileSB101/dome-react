@@ -36,6 +36,7 @@ jobs:
       
   # build images
   image:
+    needs: build
     runs-on: Ubuntu-20.04
     steps:
       - name: build image
