@@ -21,4 +21,4 @@ const HomePage: FC = (props) => {
 
 HomePage.displayName = 'HomePage';
 
-export default { HomePage };
+export { HomePage };

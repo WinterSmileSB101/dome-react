@@ -1,3 +1,1 @@
-import ReactRootView from './render';
-
-export default ReactRootView;
+export { ReactRootView } from './render';

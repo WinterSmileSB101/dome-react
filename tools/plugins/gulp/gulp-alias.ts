@@ -1,6 +1,6 @@
 import { isArray } from 'lodash';
 import through from 'through2';
-import { trimStart } from '../../../src/libs/common';
+import trimStart from '../../../src/libs/common';
 
 const getRelativePath = (levels: number) => {
     // levels===1 ===> ./
@@ -9,14 +9,14 @@ const getRelativePath = (levels: number) => {
     // levels===4 ===> ../../../
     // and so on
 
-    let baseRelativePath = '../';
-    let defaultPath = './'; // levels 1 is ./
+    const baseRelativePath = '../';
+    const defaultPath = './'; // levels 1 is ./
     let relativePath = '';
 
     while (levels >= 2) {
         relativePath += baseRelativePath;
 
-        levels--;
+        levels -= 1;
     }
 
     return relativePath?.length > 0 ? relativePath : defaultPath;
@@ -33,9 +33,9 @@ const getParsedPaths = (paths: { [key: string]: string | string[] }, baseDir: st
         })
         .map((key) => {
             const path = isArray(paths[key]) ? paths[key][0] : (paths[key] as string);
-            let value = trimStart(path, `../${baseDir}/`);
-            value = trimStart(value, `./${baseDir}/`);
-            value = trimStart(value, `${baseDir}/`);
+            let value = trimStart.trimStart(path, `../${baseDir}/`);
+            value = trimStart.trimStart(value, `./${baseDir}/`);
+            value = trimStart.trimStart(value, `${baseDir}/`);
 
             return {
                 key: key?.replace(/([/*]|[*])$/gi, ''),
@@ -58,15 +58,15 @@ exports.castAlias = function replaceAlias(alias: { [key: string]: string | strin
 
     const stream = through.obj((file, encoding, callback) => {
         if (allPathKeys?.length <= 0) {
-            return callback(null, file);
+            return callback(undefined, file);
         }
 
         if (file.isNull()) {
-            return callback(null, file);
+            return callback(undefined, file);
         }
 
         if (!file.isBuffer()) {
-            callback(null, file);
+            callback(undefined, file);
         }
 
         // if (file.isStream()) {
@@ -101,7 +101,7 @@ exports.castAlias = function replaceAlias(alias: { [key: string]: string | strin
             file.contents = Buffer.from(fileContents, encoding);
         }
 
-        callback(null, file);
+        callback(undefined, file);
     });
 
     return stream;

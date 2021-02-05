@@ -73,6 +73,9 @@ module.exports = {
         'react/jsx-props-no-spreading': [WARN],
         'react/no-array-index-key': [WARN],
         'react/prefer-stateless-function': [WARN],
-        'class-methods-use-this': [WARN],
+        'class-methods-use-this': [OFF],
+        'unicorn/better-regex': [WARN],
+        'import/prefer-default-export': [OFF],
+        'consistent-return': [WARN],
     },
 };

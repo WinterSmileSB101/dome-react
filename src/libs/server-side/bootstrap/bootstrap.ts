@@ -5,6 +5,7 @@ import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify
 import { NestFactory } from '@nestjs/core';
 
 import { BootstrapOptions } from './bootstrap.interfaces';
+import { CommonExceptionFilter } from '../error-filters';
 
 export default async function bootstrap(rootModule: ModuleMetadata, options?: BootstrapOptions) {
     const fastifyInstance = fastify({
@@ -20,6 +21,8 @@ export default async function bootstrap(rootModule: ModuleMetadata, options?: Bo
     });
 
     const app = await NestFactory.create<NestFastifyApplication>(rootModule, new FastifyAdapter());
+
+    app.useGlobalFilters(new CommonExceptionFilter());
 
     const port = options?.port || 8231;
 

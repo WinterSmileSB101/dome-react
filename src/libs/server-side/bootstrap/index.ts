@@ -1,5 +1,4 @@
-import { bootstrap } from './bootstrap';
-import { BootstrapModuleFactory } from './bootstrap-module-factory';
-import { clientBootstrap } from './client/bootstrap-hydrate';
+import bootstrap from './bootstrap';
+import BootstrapModuleFactory from './bootstrap-module-factory';
 
 export { BootstrapModuleFactory, bootstrap };

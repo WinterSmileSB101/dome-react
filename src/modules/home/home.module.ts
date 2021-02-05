@@ -6,4 +6,4 @@ import HomePageController from './controllers/home-page.controller';
     imports: [],
     providers: [],
 })
-export default class HomeModule {}
+export class HomeModule {}

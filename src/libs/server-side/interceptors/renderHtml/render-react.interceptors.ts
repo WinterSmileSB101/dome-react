@@ -2,16 +2,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import PAGE_NAME_METADATA from '@libs/server-side/reflect/metadata';
-import { createHtml } from '@libs/server-side/render';
+import createHtml from '@libs/server-side/render';
 import { ControllerMethod, RenderOption } from '@libs/server-side/types';
 import { FastifyReply } from 'fastify';
 
 @Injectable()
-export default class RenderReactInterceptor implements NestInterceptor {
+export class RenderReactInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | Promise<Observable<any>> {
         const element = (context.getHandler() as ControllerMethod).RootReactElement;
         if (!element) {
@@ -32,6 +32,10 @@ export default class RenderReactInterceptor implements NestInterceptor {
         // set to be html
         response.header('Content-Type', 'text/html;charset=UTF-8');
 
-        return createHtml(next.handle(), options);
+        return createHtml.createHtml(next.handle(), options).pipe(
+            catchError((error) => {
+                throw error;
+            }),
+        );
     }
 }

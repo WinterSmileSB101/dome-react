@@ -1,3 +1,1 @@
-import RenderReactInterceptor from './render-react.interceptors';
-
-export default RenderReactInterceptor;
+export { RenderReactInterceptor } from './render-react.interceptors';
