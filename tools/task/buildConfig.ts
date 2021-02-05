@@ -19,7 +19,7 @@ import Coper from '../utils/copy';
 const IsDev = argv['dev'];
 
 function buildConfig() {
-    log(chalk.green('build configs...'));
+    log(chalk.green(`build configs...${IsDev ? 'dev' : 'prod'}`));
 
     return gulp
         .src('config/**/!(*.d).{js,ts,json}', { base: './config' })

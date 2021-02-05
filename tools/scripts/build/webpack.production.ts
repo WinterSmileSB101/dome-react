@@ -20,7 +20,7 @@ const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common,
     plugins: [
         ...WebpackConfig.fixedPlugins,
         new AssetsPlugin({
-            path: path.resolve(PROJECT_PATH, './dist/publish/conf'),
+            path: path.resolve(PROJECT_PATH, './dist/conf'),
             filename: 'scripts.mapping.json',
             processOutput: function (mapping) {
                 const scripts = {};
@@ -34,7 +34,7 @@ const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common,
             },
         }),
         new AssetsPlugin({
-            path: path.resolve(PROJECT_PATH, './dist/conf'),
+            path: path.resolve(PROJECT_PATH, './dist/conf/'),
             filename: 'styles.mapping.json',
             processOutput: function (mapping) {
                 const scripts = {};
