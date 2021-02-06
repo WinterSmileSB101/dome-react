@@ -80,12 +80,12 @@ exports.castAlias = function replaceAlias(alias: { [key: string]: string | strin
             // console.log(file.base);
             // console.log(file.relative); // relative path
             let fileContents = String(file.contents);
-            console.log(file.relative)
+            //console.log(file.relative)
             const levels = file.relative.split(path.sep)?.length || 1;
             allParsedPaths.forEach((path) => {
                 if (new RegExp(`([from ]|[require(])(["]|['])${path.key}.*["|']`).test(fileContents)) {
                     const pathPrefix = getRelativePath(levels);
-                    console.log(path.key,pathPrefix,path.value);
+                    //console.log(path.key,pathPrefix,path.value);
 
                     fileContents = fileContents?.replace(
                         new RegExp(`(['|"])${path.key}`, 'gi'),
