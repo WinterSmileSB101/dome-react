@@ -25,6 +25,7 @@ jobs:
       uses: einaregilsson/build-number@v3 
       with:
         token: ${{secrets.GIT_FULL_CONTROL_TOKEN}}
+        prefix: release
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -63,7 +64,7 @@ jobs:
       
   # build images
   image:
-    needs: Gen_build_number
+    needs: [Gen_build_number,build]
     runs-on: Ubuntu-20.04
     steps:
       - name: build image
