@@ -69,7 +69,8 @@ jobs:
           commit_message:  "Publish Static ${{ needs.Gen_build_number.outputs.build_number }}"
           branch: static_resource
           commit_options: '--no-verify --signoff'
-          repository: ./dist/publish/static
+          file_pattern: dist/publish/static/*
+          repository: .
           commit_user_name: "action publish static resource"
           commit_user_email: "action-static@github.org"
           commit_author: "action publish static resource"  
