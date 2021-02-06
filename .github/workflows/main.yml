@@ -63,21 +63,29 @@ jobs:
             ./dist/publish/static
           retention-days: 2
       # push static file back to this repo
-      - name: Push production static back to this repo
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with: 
-          commit_message:  "Publish Static ${{ needs.Gen_build_number.outputs.build_number }}"
-          branch: static_resource
-          commit_options: '--no-verify --signoff'
-          file_pattern: dist/publish/static/*
-          repository: .
-          commit_user_name: "action publish static resource"
-          commit_user_email: "action-static@github.org"
-          commit_author: "action publish static resource"  
-          tagging_message: 'v.${{ needs.Gen_build_number.outputs.build_number }}'
-          push_options: '--force'
-          skip_dirty_check: true
-          skip_fetch: true
+      #- name: Push production static back to this repo
+      #  uses: stefanzweifel/git-auto-commit-action@v4
+      #  with: 
+      #    commit_message:  "Publish Static ${{ needs.Gen_build_number.outputs.build_number }}"
+      #    branch: static_resource
+      #    commit_options: '--no-verify --signoff'
+      #    file_pattern: dist/publish/static/*
+      #    repository: .
+      #    commit_user_name: "action publish static resource"
+      #    commit_user_email: "action-static@github.org"
+      #    commit_author: "action publish static resource"  
+      #    tagging_message: 'v.${{ needs.Gen_build_number.outputs.build_number }}'
+      #    push_options: '--force'
+      #    skip_dirty_check: true
+      #    skip_fetch: true
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            ./dist/publish/static/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_FULL_CONTROL_TOKEN }}
       
   # build images
   image:
