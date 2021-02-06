@@ -53,13 +53,13 @@ jobs:
         run: |
           yarn release
       # upload server artifacts
-      - name: Archive production server artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dist-static
-          path: |
-            ./dist/publish/server
-          retention-days: 2
+      #- name: Archive production server artifacts
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: dist-static
+      #    path: |
+      #      ./dist/publish/server
+      #    retention-days: 1
       # upload static artifacts
       - name: Archive production static artifacts
         uses: actions/upload-artifact@v2
@@ -67,7 +67,7 @@ jobs:
           name: dist-static
           path: |
             ./dist/publish/static
-          retention-days: 2
+          retention-days: 1
       # push static file back to this repo
       #- name: Push production static back to this repo
       #  uses: stefanzweifel/git-auto-commit-action@v4
