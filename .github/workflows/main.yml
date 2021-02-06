@@ -39,7 +39,7 @@ jobs:
         with:
           name: dist-static
           path: |
-            ./dist/publish/server/*
+            ./dist/publish/server
           retention-days: 2
       # upload static artifacts
       - name: Archive production static artifacts
@@ -47,7 +47,7 @@ jobs:
         with:
           name: dist-static
           path: |
-            ./dist/publish/static/*
+            ./dist/publish/static
           retention-days: 2
             
       
