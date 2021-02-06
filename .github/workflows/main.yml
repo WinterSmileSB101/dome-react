@@ -40,6 +40,7 @@ jobs:
           name: dist-static
           path: |
             ./dist/publish/server/*
+          retention-days: 2
       # upload static artifacts
       - name: Archive production static artifacts
         uses: actions/upload-artifact@v2
@@ -47,6 +48,7 @@ jobs:
           name: dist-static
           path: |
             ./dist/publish/static/*
+          retention-days: 2
             
       
   # build images
