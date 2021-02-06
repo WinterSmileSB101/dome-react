@@ -33,7 +33,7 @@ function buildFile(fileName: string) {
 
 function copyAllAdditionFiles() {
     return new Promise((reslove, reject) => {
-        console.log('copy docker files');
+        console.log('copy all package additional files');
 
         buildFileSync('Dockerfile');
         buildFileSync('package.json');
@@ -59,6 +59,34 @@ function copyAllAdditionFiles() {
     });
 }
 
+const staticGitPath = path.resolve(PROJECT_PATH, './publish_static_git');
+
+function copyStaticGit() {
+    return new Promise((reslove, reject) => {
+        console.log('copy static git files');
+
+        const fromDir = path.resolve(staticGitPath);
+        const toGlobPath = path.resolve(PROJECT_PATH, `./dist/publish/static/`);
+
+        const coper = new Coper({
+            patterns: [
+                {
+                    from: fromDir,
+                    to: [toGlobPath],
+                },
+            ],
+        });
+
+        coper.run(() => {
+            log(chalk.green('copy docker files done...', fromDir));
+            cleanDir([additionFilePath])(() => {
+                reslove(undefined);
+            });
+        });
+    });
+}
+
 export default {
     copyAllAdditionFiles,
+    copyStaticGit,
 };

@@ -2,7 +2,9 @@ import webpack from 'webpack';
 import log from 'fancy-log';
 import chalk from 'chalk';
 import { argv } from 'yargs';
-import { parallel } from 'gulp';
+import { parallel, series } from 'gulp';
+import additionFiles from './buildAdditionFiles';
+
 import prodConfig from '../scripts/build/webpack.production';
 
 import devConfig from '../scripts/build/webpack.development';
@@ -91,5 +93,7 @@ function startStaticServer() {
 }
 
 export default {
-    compileClient: IsDev ? parallel(compileClient, startStaticServer) : compileClient,
+    compileClient: IsDev
+        ? parallel(compileClient, startStaticServer)
+        : series(compileClient, additionFiles.copyStaticGit),
 };
