@@ -33,13 +33,20 @@ jobs:
       - name: Build
         run: |
           yarn release
-      # build 
-      - name: Archive production artifacts
+      # upload server artifacts
+      - name: Archive production server artifacts
         uses: actions/upload-artifact@v2
         with:
           name: dist-static
           path: |
-            package.json
+            ./dist/publish/server/*
+      # upload static artifacts
+      - name: Archive production static artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-static
+          path: |
+            ./dist/publish/static/*
             
       
   # build images
