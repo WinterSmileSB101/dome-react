@@ -15,6 +15,16 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  Gen_build_number:
+   runs-on: Ubuntu-20.04
+   outputs:
+      build_number: ${{ steps.buildnumber.outputs.build_number }}
+   steps:
+    - name: Generate build number
+      id: buildnumber
+      uses: einaregilsson/build-number@v3 
+      with:
+        token: ${{secrets.GIT_FULL_CONTROL_TOKEN}}
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -53,8 +63,10 @@ jobs:
       
   # build images
   image:
-    needs: build
+    needs: Gen_build_number
     runs-on: Ubuntu-20.04
     steps:
       - name: build image
-        run: docker -v
+        run: |
+          docker -v
+          echo ${{ needs.job1.outputs.build_number }}
