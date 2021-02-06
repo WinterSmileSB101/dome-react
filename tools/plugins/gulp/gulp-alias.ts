@@ -1,4 +1,5 @@
 import { isArray } from 'lodash';
+import path from 'path';
 import through from 'through2';
 import trimStart from '../../../src/libs/common';
 
@@ -80,7 +81,7 @@ exports.castAlias = function replaceAlias(alias: { [key: string]: string | strin
             // console.log(file.relative); // relative path
             let fileContents = String(file.contents);
             console.log(file.relative)
-            const levels = file.relative.split('/')?.length || 1;
+            const levels = file.relative.split(path.sep)?.length || 1;
             allParsedPaths.forEach((path) => {
                 if (new RegExp(`([from ]|[require(])(["]|['])${path.key}.*["|']`).test(fileContents)) {
                     const pathPrefix = getRelativePath(levels);
