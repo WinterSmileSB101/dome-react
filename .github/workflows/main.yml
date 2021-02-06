@@ -30,6 +30,8 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: Ubuntu-20.04
+    needs: [Gen_build_number]
+    
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -60,7 +62,21 @@ jobs:
           path: |
             ./dist/publish/static
           retention-days: 2
-            
+      # push static file back to this repo
+      - name: Push production static back to this repo
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with: 
+          commit_message:  "Publish Static ${{ needs.Gen_build_number.outputs.build_number }}"
+          branch: static_resource
+          commit_options: '--no-verify --signoff'
+          repository: ./dist/publish/static
+          commit_user_name: "action publish static resource"
+          commit_user_email: "action-static@github.org"
+          commit_author: "action publish static resource"  
+          tagging_message: 'v.${{ needs.Gen_build_number.outputs.build_number }}'
+          push_options: '--force'
+          skip_dirty_check: true
+          skip_fetch: true
       
   # build images
   image:
@@ -70,4 +86,4 @@ jobs:
       - name: build image
         run: |
           docker -v
-          echo ${{ needs.job1.outputs.build_number }}
+          echo ${{ needs.Gen_build_number.outputs.build_number }}
