@@ -8,6 +8,7 @@ import common from './webpack.common';
 import { UnionWebpackConfigWithDevelopmentServer } from '../types';
 
 import AllConst from '../const';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 
 const { PROJECT_PATH, IS_DEV } = AllConst.ProjectConfig;
 
@@ -19,6 +20,7 @@ const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common,
         filename: `static/scripts/[name].js`,
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new HardSourceWebpackPlugin(), //only use in dev environment
         new AssetsPlugin({
             path: path.resolve(PROJECT_PATH, './dist/development/server/conf'),

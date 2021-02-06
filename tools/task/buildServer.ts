@@ -4,14 +4,19 @@ import ts from 'gulp-typescript';
 import { argv } from 'yargs';
 import { exec, spawnSync } from 'child_process';
 // eslint-disable-next-line unicorn/import-style
-import { join } from 'path';
+import path, { join } from 'path';
 import configTask from './buildConfig';
 import { castAlias } from '../plugins/gulp';
+import additionFiles from './buildAdditionFiles';
 // const { buildConfig } = require('./buildConfig');
 
 import AllConst from '../scripts/const';
 
-import { cleanDist } from './clean';
+import { cleanDir } from './clean';
+import Coper from '../utils/copy';
+import glob from 'glob';
+import { log } from 'console';
+import chalk from 'chalk';
 
 const { PROJECT_PATH } = AllConst.ProjectConfig;
 
@@ -35,6 +40,34 @@ function compileTS() {
         .pipe(castAlias(tsProject?.options?.paths, baseDir)) // convert all path mapping to relative path
         .pipe(tsProject())
         .pipe(gulp.dest(`dist/${IsDevelopment ? '/development' : 'publish'}/server`));
+}
+
+function copyLibs() {
+    return new Promise((reslove, reject) => {
+        console.log('copy libs');
+
+        const fromDir = path.resolve(PROJECT_PATH, './dist/publish/server/libs');
+        const toGlobPath = path.resolve(PROJECT_PATH, `./dist/publish/server/modules/*`);
+
+        const coper = new Coper({
+            patterns: [
+                {
+                    from: fromDir,
+                    to: glob.sync(toGlobPath, { nodir: true }),
+                },
+            ],
+        });
+
+        coper.run(() => {
+            log(chalk.green('clear libs...', fromDir));
+            cleanDir(fromDir)(() => {
+                reslove(undefined);
+            });
+            // cleanDir(['dist/conf'])(() => {
+            //     reslove(undefined);
+            // });
+        });
+    });
 }
 
 function watchToCompile() {
@@ -61,6 +94,6 @@ async function startNodeServer() {
 }
 
 export default {
-    watchToCompileTS: parallel(series(cleanDist, compileTS, configTask.buildConfig, startNodeServer), watchToCompile),
-    compileTS: series(compileTS, configTask.buildConfig),
+    watchToCompileTS: parallel(series(compileTS, configTask.buildConfig, startNodeServer), watchToCompile),
+    compileTS: series(compileTS, configTask.buildConfig, additionFiles.copyAllAdditionFiles),
 };

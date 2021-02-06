@@ -49,6 +49,12 @@ function copyConfig() {
             return join(dir, './conf');
         });
 
+        log(chalk.green(toDirs));
+
+        if (toDirs?.length <= 0) {
+            reject('copy config: no any to dir.');
+        }
+
         const coper = new Coper({
             patterns: [
                 {
