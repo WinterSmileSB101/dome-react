@@ -43,7 +43,7 @@ jobs:
         run: |
           echo $GITHUB_SHA
           echo $GITHUB_REF
-          echo ${{git describe --tags `git rev-list --tags --max-count=1`}}
+          echo "$(git describe --tags 'git rev-list --tags --max-count=1')"
           yarn install
 
       # build
