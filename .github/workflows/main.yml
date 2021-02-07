@@ -94,8 +94,8 @@ jobs:
       - name: Commit static resource files
         run: |
             cd ./dist/publish/
-            git config --local user.email "895481+SmileSB101@user.noreply.gitee.com"
-            git config --local user.name "SmileSB101@user.noreply.gitee.com"
+            git config --global user.email "895481+SmileSB101@user.noreply.gitee.com"
+            git config --global user.name "SmileSB101@user.noreply.gitee.com"
             git clone ${{ secrets.CN_STATIC_SERVER }}
             mv ./static ./dome-react-static
             cd ./dome-react-static
