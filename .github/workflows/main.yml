@@ -122,7 +122,7 @@ jobs:
       - name: buildsss
         run: |
           cd ./dist/publish/server
-          docker build -t ${{ TAG_OR_BRANCH }}-${{ steps.buildnumber.outputs.build_number }} .
+          docker build -t `${{ TAG_OR_BRANCH }}-${{ steps.buildnumber.outputs.build_number }}` .
 
 
   # build images
