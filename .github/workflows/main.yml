@@ -126,13 +126,32 @@ jobs:
           tags: true
           
       # build images
-      - name: Build Server Image
-        run: |
-          cd ./dist/publish/server
-          ls
-          docker build -t dome-react-server:$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} .
-          docker login -u ${{ env.DOCKER.US_USER }} -p ${{ env.DOCKER.US_PASSWORD }}
-          docker push dome-react-server:$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }}
+      #- name: Build Server Image
+      #  run: |
+      #    cd ./dist/publish/server
+      #    ls
+      #    docker build -t dome-react-server:$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} .
+      #    docker login -u ${{ env.DOCKER.US_USER }} -p ${{ env.DOCKER.US_PASSWORD }}
+      #    docker push dome-react-server:$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }}
+      #- name: Build Docker Image
+      #  id: buildAndPushImage
+      #  uses: risfeng/docker-image-build-push-action@v1.0
+      #  with:
+      #    registry_url: 'registry.us-east-1.aliyuncs.com'
+      #    namespaces: 'smilesb101'
+      #    repository_name: 'dome-react-server'
+      #    user_name: ${{ secrets.DOCKER_USER }}
+      #    password: ${{ secrets.DOCKER_PASSWORD }}
+      #    image_version: 'v1.0'
+      #    docker_file: '.'
+      - name: Publish to Docker Repository
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: dome-react-server
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          workdir: ./dist/publish/server
+          tags: $TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }}
 
 
   # build images
