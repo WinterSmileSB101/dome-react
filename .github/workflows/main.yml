@@ -40,7 +40,9 @@ jobs:
 
       # Install packages
       - name: Install Packages
-        run: yarn install
+        run: |
+          echo github.ref
+          yarn install
 
       # build
       - name: Build
