@@ -12,6 +12,7 @@ on:
   #  types:
   #    - created
   push:
+    branches: [ master ]
     tags:
       - 'v*.*.*'
 
@@ -99,6 +100,7 @@ jobs:
             git clone ${{ secrets.CN_STATIC_SERVER }}
             mv ./static ./dome-react-static
             cd ./dome-react-static
+            ll
             git commit -m "Add v.${{ steps.buildnumber.outputs.build_number }} static changes" -a
       - name: Push static resource to static git
         uses: ad-m/github-push-action@master
