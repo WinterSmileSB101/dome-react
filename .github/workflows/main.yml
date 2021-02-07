@@ -124,7 +124,7 @@ jobs:
         run: |
           cd ./dist/publish/server
           ls
-          docker build -t $TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} .
+          docker build -t dome-react-server:$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} .
 
 
   # build images
