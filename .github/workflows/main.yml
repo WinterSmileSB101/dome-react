@@ -38,7 +38,6 @@ jobs:
         uses: einaregilsson/build-number@v3
         with:
           token: ${{secrets.GIT_FULL_CONTROL_TOKEN}}
-          prefix: $TAG_OR_BRANCH
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
@@ -46,9 +45,7 @@ jobs:
       - name: Install Packages
         run: |
           echo $TAG_OR_BRANCH
-          echo $CURRENT_SHA
-          echo "$(git describe --tags 'git rev-list --tags --max-count=1')"
-          yarn install
+      #    yarn install
 
       # build
       #- name: Build
