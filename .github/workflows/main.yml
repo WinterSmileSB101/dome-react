@@ -109,7 +109,7 @@ jobs:
 
   # build images
   image:
-    needs: [Gen_build_number,build]
+    needs: [build]
     runs-on: Ubuntu-20.04
     steps:
       - name: build image
