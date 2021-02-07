@@ -31,7 +31,6 @@ jobs:
       uses: einaregilsson/build-number@v3
       with:
         token: ${{secrets.GIT_FULL_CONTROL_TOKEN}}
-        prefix: release
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -100,14 +99,17 @@ jobs:
       # push static resource to static git
       - name: Commit static resource files
         run: |
-            cd ./dist/publish/static
+            cd ./dist/publish/
+            git clone ${{ secrets.CN_STATIC_SERVER }}
+            mv ./static ./dome-react-static
+            cd ./dome-react-static
             git config --local user.email "smilesb101+github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
             git commit -m "Add v.${{ needs.Gen_build_number.outputs.build_number }} static changes" -a
       - name: Push static resource to static git
         uses: ad-m/github-push-action@master
         with:
-            github_token: ${{ secrets.GIT_FULL_CONTROL_TOKEN }}
+            github_token: ${{ secrets.CN_STATIC_SERVER_TOKEN }}
             branch: develop
 
 
