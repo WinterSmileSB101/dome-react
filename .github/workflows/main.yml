@@ -119,10 +119,11 @@ jobs:
           tags: true
           
       # build images
-      - name: buildsss
+      - name: Build Server Image
         run: |
           cd ./dist/publish/server
-          docker build -t `$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }}` .
+          ls
+          docker build -t $TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} .
 
 
   # build images
