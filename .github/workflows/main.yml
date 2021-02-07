@@ -106,7 +106,7 @@ jobs:
             cd ./dome-react-static
             ls
             git add .
-            git commit -m "Add $TAG_OR_BRANCH${{ steps.buildnumber.outputs.build_number }} static changes"
+            git commit -m "Add ${{ TAG_OR_BRANCH }}-${{ steps.buildnumber.outputs.build_number }} static changes"
       # git push
       - name: Push static resource to static git
         uses: ad-m/github-push-action@master
@@ -122,7 +122,7 @@ jobs:
       - name: buildsss
         run: |
           cd ./dist/publish/server
-          docker build -t "dome-react-server:$TAG_OR_BRANCH${{ steps.buildnumber.outputs.build_number }}"
+          docker build -t ${{ TAG_OR_BRANCH }}-${{ steps.buildnumber.outputs.build_number }} .
 
 
   # build images
