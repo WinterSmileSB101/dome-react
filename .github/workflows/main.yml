@@ -109,7 +109,7 @@ jobs:
       - name: Push static resource to static git
         uses: ad-m/github-push-action@master
         with:
-          repository: ${{ secrets.CN_STATIC_SERVER }}
+          repository: dome-react-static
           github_token: ${{ secrets.GIT_FULL_CONTROL_TOKEN }}
           branch: develop
 
