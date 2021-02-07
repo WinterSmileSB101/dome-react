@@ -30,6 +30,9 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Get Tag Or Branch
+        id: tagSha
+        uses: WinterSmileSB101/action-git-current-info@master
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v3
@@ -41,9 +44,6 @@ jobs:
       # Install packages
       - name: Install Packages
         run: |
-          echo $GITHUB_SHA
-          echo $GITHUB_REF
-          echo $(git describe --tags `git rev-list --tags --max-count=1`)
           yarn install
 
       # build
@@ -106,7 +106,7 @@ jobs:
             cd ./dome-react-static
             ls
             git add .
-            git commit -m "Add v.${{ steps.buildnumber.outputs.build_number }} static changes"
+            git commit -m "Add $TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} static changes"
       # git push
       - name: Push static resource to static git
         uses: ad-m/github-push-action@master
@@ -117,15 +117,22 @@ jobs:
           directory: ./dist/publish/dome-react-static
           force: true
           tags: true
+          
+      # build images
+      - name: Build Server Image
+        run: |
+          cd ./dist/publish/server
+          ls
+          docker build -t $TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} .
 
 
   # build images
-  image:
-    needs: [build]
-    runs-on: Ubuntu-20.04
-    steps:
-      - name: build image
-        run: |
-          docker -v
-          echo ${{ steps.buildnumber.outputs.build_number }}
+  #image:
+  #  needs: [build]
+  #  runs-on: Ubuntu-20.04
+  #  steps:
+  #    - name: build image
+  #      run: |
+  #        docker 
+  #        echo ${{ steps.buildnumber.outputs.build_number }}
 
