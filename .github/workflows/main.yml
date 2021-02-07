@@ -101,7 +101,8 @@ jobs:
             mv ./static ./dome-react-static
             cd ./dome-react-static
             ls
-            git commit -m "Add v.${{ steps.buildnumber.outputs.build_number }} static changes" -a
+            git add .
+            git commit -m "Add v.${{ steps.buildnumber.outputs.build_number }} static changes"
       - name: Push static resource to static git
         uses: ad-m/github-push-action@master
         with:
