@@ -44,14 +44,12 @@ jobs:
       # Install packages
       - name: Install Packages
         run: |
-          echo "${{ steps.tagSha.outputs.tag_or_branch }}"
-          echo $TAG_OR_BRANCH
-      #    yarn install
+          yarn install
 
       # build
-      #- name: Build
-      #  run: |
-      #    yarn release
+      - name: Build
+        run: |
+          yarn release
       # upload server artifacts
       - name: Archive production server artifacts
         uses: actions/upload-artifact@v2
