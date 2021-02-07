@@ -21,16 +21,6 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  Gen_build_number:
-   runs-on: Ubuntu-20.04
-   outputs:
-      build_number: ${{ steps.buildnumber.outputs.build_number }}
-   steps:
-    - name: Generate build number
-      id: buildnumber
-      uses: einaregilsson/build-number@v3
-      with:
-        token: ${{secrets.GIT_FULL_CONTROL_TOKEN}}
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -40,6 +30,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Generate build number
+        id: buildnumber
+        uses: einaregilsson/build-number@v3
+        with:
+          token: ${{secrets.GIT_FULL_CONTROL_TOKEN}}
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
@@ -100,12 +95,12 @@ jobs:
       - name: Commit static resource files
         run: |
             cd ./dist/publish/
+            git config --local user.email "895481+SmileSB101@user.noreply.gitee.com"
+            git config --local user.name "SmileSB101@user.noreply.gitee.com"
             git clone ${{ secrets.CN_STATIC_SERVER }}
             mv ./static ./dome-react-static
             cd ./dome-react-static
-            git config --local user.email "smilesb101+github-actions[bot]@users.noreply.github.com"
-            git config --local user.name "github-actions[bot]"
-            git commit -m "Add v.${{ needs.Gen_build_number.outputs.build_number }} static changes" -a
+            git commit -m "Add v.${{ steps.buildnumber.outputs.build_number }} static changes" -a
       - name: Push static resource to static git
         uses: ad-m/github-push-action@master
         with:
@@ -121,4 +116,4 @@ jobs:
       - name: build image
         run: |
           docker -v
-          echo ${{ needs.Gen_build_number.outputs.build_number }}
+          echo ${{ steps.buildnumber.outputs.build_number }}
