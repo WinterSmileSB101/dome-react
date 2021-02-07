@@ -44,7 +44,8 @@ jobs:
       # Install packages
       - name: Install Packages
         run: |
-          echo ${{ steps.tagSha.outputs.tag_or_branch }}
+          echo "${{ steps.tagSha.outputs.tag_or_branch }}"
+          echo $TAG_OR_BRANCH
       #    yarn install
 
       # build
