@@ -33,13 +33,12 @@ jobs:
       - name: Get Tag Or Branch
         id: tagSha
         uses: WinterSmileSB101/action-git-current-info@master
-        with:
-          token: ${{secrets.GIT_FULL_CONTROL_TOKEN}}
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v3
         with:
           token: ${{secrets.GIT_FULL_CONTROL_TOKEN}}
+          prefix: $TAG_OR_BRANCH
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
