@@ -25,6 +25,7 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: Ubuntu-20.04
+    if: startsWith(github.ref, 'refs/tags/')
     #needs: []
 
 
