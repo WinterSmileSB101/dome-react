@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Get Tag Or Branch
         id: tagSha
-        uses: WinterSmileSB101/action-git-current-info@v.0.0.1
+        uses: WinterSmileSB101/action-git-current-info@master
         with:
           token: ${{secrets.GIT_FULL_CONTROL_TOKEN}}
       - name: Generate build number
