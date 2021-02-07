@@ -41,7 +41,7 @@ jobs:
       # Install packages
       - name: Install Packages
         run: |
-          echo github.ref
+          echo ${{github.ref}}
           yarn install
 
       # build
@@ -105,11 +105,12 @@ jobs:
             ls
             git add .
             git commit -m "Add v.${{ steps.buildnumber.outputs.build_number }} static changes"
-      - name: Push static resource to static git
-        uses: ad-m/github-push-action@master
-        with:
-            github_token: ${{ secrets.CN_STATIC_SERVER_TOKEN }}
-            branch: develop
+            git push
+      #- name: Push static resource to static git
+      #  uses: ad-m/github-push-action@master
+      #  with:
+      #      github_token: ${{ secrets.CN_STATIC_SERVER_TOKEN }}
+      #      branch: develop
 
 
   # build images
