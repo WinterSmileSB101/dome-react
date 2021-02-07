@@ -131,7 +131,8 @@ jobs:
           cd ./dist/publish/server
           ls
           docker build -t dome-react-server:$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} .
-          docker login -u 用户名 -p 密码
+          docker login -u ${{ env.DOCKER.US_USER }} -p ${{ env.DOCKER.US_PASSWORD }}
+          docker push dome-react-server:$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }}
 
 
   # build images
