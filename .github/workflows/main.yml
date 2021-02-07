@@ -106,7 +106,7 @@ jobs:
             cd ./dome-react-static
             ls
             git add .
-            git commit -m "Add $TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} static changes"
+            git commit -m "Add $TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} static changes,hash is $GITHUB_SHA"
       # git push
       - name: Push static resource to static git
         uses: ad-m/github-push-action@master
