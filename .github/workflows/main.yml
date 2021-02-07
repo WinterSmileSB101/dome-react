@@ -43,13 +43,13 @@ jobs:
         run: |
           echo $GITHUB_SHA
           echo $GITHUB_REF
-          echo $(git describe --tags `git rev-list --tags --max-count=1`)
+          echo ${{git describe --tags `git rev-list --tags --max-count=1`}}
           yarn install
 
       # build
-      - name: Build
-        run: |
-          yarn release
+      #- name: Build
+      #  run: |
+      #    yarn release
       # upload server artifacts
       - name: Archive production server artifacts
         uses: actions/upload-artifact@v2
