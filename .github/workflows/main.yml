@@ -105,12 +105,13 @@ jobs:
             ls
             git add .
             git commit -m "Add v.${{ steps.buildnumber.outputs.build_number }} static changes"
-            git push
-      #- name: Push static resource to static git
-      #  uses: ad-m/github-push-action@master
-      #  with:
-      #      github_token: ${{ secrets.CN_STATIC_SERVER_TOKEN }}
-      #      branch: develop
+      # git push
+      - name: Push static resource to static git
+        uses: ad-m/github-push-action@master
+        with:
+          repository: ${{ secrets.CN_STATIC_SERVER }}
+          github_token: ${{ secrets.GIT_FULL_CONTROL_TOKEN }}
+          branch: develop
 
 
   # build images
