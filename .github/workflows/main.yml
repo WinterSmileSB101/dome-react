@@ -21,6 +21,12 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  test:
+    runs-on: Ubuntu-20.04
+    steps: 
+      - name: Test Env
+        run: |
+          echo ${{ DOCKER.US_PASSWORD }}
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -125,6 +131,7 @@ jobs:
           cd ./dist/publish/server
           ls
           docker build -t dome-react-server:$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} .
+          docker login -u 用户名 -p 密码
 
 
   # build images
