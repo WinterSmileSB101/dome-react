@@ -111,7 +111,7 @@ jobs:
         with:
           repository: WinterSmileSB101/dome-react-static
           github_token: ${{ secrets.GIT_FULL_CONTROL_TOKEN }}
-          branch: develop
+          branch: with-static-resource
           directory: ./dist/publish/dome-react-static
 
 
