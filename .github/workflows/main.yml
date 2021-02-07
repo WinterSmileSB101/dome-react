@@ -30,6 +30,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Get Tag Or Branch
+        id: tagSha
+        uses: WinterSmileSB101/action-git-current-info@v.0.0.1
+        with:
+          token: ${{secrets.GIT_FULL_CONTROL_TOKEN}}
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v3
@@ -41,8 +46,8 @@ jobs:
       # Install packages
       - name: Install Packages
         run: |
-          echo $GITHUB_SHA
-          echo $GITHUB_REF
+          echo $TAG_OR_BRANCH
+          echo $CURRENT_SHA
           echo "$(git describe --tags 'git rev-list --tags --max-count=1')"
           yarn install
 
