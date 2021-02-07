@@ -79,9 +79,7 @@ function copyStaticGit() {
 
         coper.run(() => {
             log(chalk.green('copy docker files done...', fromDir));
-            cleanDir([additionFilePath])(() => {
-                reslove(undefined);
-            });
+            reslove(undefined);
         });
     });
 }
