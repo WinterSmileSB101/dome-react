@@ -12,7 +12,7 @@ on:
   #  types:
   #    - created
   push:
-    branches: [ master ]
+    #branches: [ master ]
     tags:
       - 'v*.*.*'
 
@@ -151,7 +151,7 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           workdir: ./dist/publish/server
-          tags: "${{ TAG_OR_BRANCH }}-${{ steps.buildnumber.outputs.build_number }}"
+          tags: "$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }}"
 
 
   # build images
