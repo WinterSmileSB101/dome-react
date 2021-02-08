@@ -147,7 +147,7 @@ jobs:
       - name: Build Image & Publish to Docker Repository
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: "dome-react-server"
+          name: ${{ secrets.DOCKER_USER }}dome-react-server
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           workdir: ./dist/publish/server
