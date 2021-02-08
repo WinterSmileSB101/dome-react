@@ -26,7 +26,7 @@ jobs:
     steps: 
       - name: Test Env
         run: |
-          echo ${{ env.DOCKER.US_PASSWORD }}
+          echo "Help"
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -144,14 +144,14 @@ jobs:
       #    password: ${{ secrets.DOCKER_PASSWORD }}
       #    image_version: 'v1.0'
       #    docker_file: '.'
-      - name: Publish to Docker Repository
+      - name: Build Image & Publish to Docker Repository
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: dome-react-server
+          name: "dome-react-server"
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           workdir: ./dist/publish/server
-          tags: $TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }}
+          tags: "$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }}"
 
 
   # build images
