@@ -151,7 +151,7 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           workdir: ./dist/publish/server
-          tags: $TAG_OR_BRANCH-$BUILD_NUMBER
+          tags: ${{ $TAG_OR_BRANCH-$BUILD_NUMBER }}
 
 
   # build images
