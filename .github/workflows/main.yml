@@ -12,7 +12,7 @@ on:
   #  types:
   #    - created
   push:
-    branches: [ master ]
+    #branches: [ master ]
     tags:
       - 'v*.*.*'
 
@@ -21,17 +21,24 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  test:
+    runs-on: Ubuntu-20.04
+    steps: 
+      - name: Test Env
+        run: |
+          echo "Help"
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: Ubuntu-20.04
+    if: startsWith(github.ref, 'refs/tags/')
     #needs: []
 
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Get Tag Or Branch
-        id: tagSha
+        id: tagsha
         uses: WinterSmileSB101/action-git-current-info@master
       - name: Generate build number
         id: buildnumber
@@ -106,7 +113,7 @@ jobs:
             cd ./dome-react-static
             ls
             git add .
-            git commit -m "Add $TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} static changes"
+            git commit -m "Add $TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} static changes,hash is $GITHUB_SHA"
       # git push
       - name: Push static resource to static git
         uses: ad-m/github-push-action@master
@@ -119,11 +126,32 @@ jobs:
           tags: true
           
       # build images
-      - name: Build Server Image
-        run: |
-          cd ./dist/publish/server
-          ls
-          docker build -t $TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} .
+      #- name: Build Server Image
+      #  run: |
+      #    cd ./dist/publish/server
+      #    ls
+      #    docker build -t dome-react-server:$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }} .
+      #    docker login -u ${{ env.DOCKER.US_USER }} -p ${{ env.DOCKER.US_PASSWORD }}
+      #    docker push dome-react-server:$TAG_OR_BRANCH-${{ steps.buildnumber.outputs.build_number }}
+      #- name: Build Docker Image
+      #  id: buildAndPushImage
+      #  uses: risfeng/docker-image-build-push-action@v1.0
+      #  with:
+      #    registry_url: 'registry.us-east-1.aliyuncs.com'
+      #    namespaces: 'smilesb101'
+      #    repository_name: 'dome-react-server'
+      #    user_name: ${{ secrets.DOCKER_USER }}
+      #    password: ${{ secrets.DOCKER_PASSWORD }}
+      #    image_version: 'v1.0'
+      #    docker_file: '.'
+      - name: Build Image & Publish to Docker Repository
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: ${{ secrets.DOCKER_USER }}/dome-react-server
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          workdir: ./dist/publish/server
+          tags: ${{ env.TAG_OR_BRANCH }}-${{ env.BUILD_NUMBER }}
 
 
   # build images
