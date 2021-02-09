@@ -31,7 +31,7 @@ function compileTS() {
 
     const baseDir = 'src';
     // eslint-disable-next-line no-shadow
-    const compileGlob = 'src/**/*.{ts,tsx,js,jsx}';
+    //const compileGlob = 'src/**/*.{ts,tsx,js,jsx}';
 
     console.log('build server');
 
@@ -94,6 +94,10 @@ async function startNodeServer() {
 }
 
 export default {
-    watchToCompileTS: parallel(series(compileTS, configTask.buildConfig, startNodeServer), watchToCompile),
+    watchToCompileTS: parallel(
+        series(compileTS, configTask.buildConfig, startNodeServer),
+        watchToCompile,
+        configTask.watchConfig,
+    ),
     compileTS: series(compileTS, configTask.buildConfig, additionFiles.copyAllAdditionFiles),
 };

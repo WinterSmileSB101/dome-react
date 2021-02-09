@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { log } from 'console';
 import glob from 'glob';
 import path from 'path';
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs-extra';
+import { readFileSync, writeFileSync, existsSync, ensureDirSync } from 'fs-extra';
 
 import AllConst from '../scripts/const';
 import Coper from '../utils/copy';
@@ -16,9 +16,10 @@ function buildFileSync(fileName: string) {
     const finalRelativePath = `./${fileName}`;
     const fileBuf = readFileSync(path.resolve(PROJECT_PATH, finalRelativePath));
 
-    if (!existsSync(additionFilePath)) {
-        mkdirSync(additionFilePath);
-    }
+    ensureDirSync(additionFilePath);
+    // if (!existsSync(additionFilePath)) {
+    //     mkdirSync(additionFilePath);
+    // }
 
     writeFileSync(path.resolve(additionFilePath, finalRelativePath), fileBuf);
 }

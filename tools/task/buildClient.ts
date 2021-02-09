@@ -93,7 +93,5 @@ function startStaticServer() {
 }
 
 export default {
-    compileClient: IsDev
-        ? parallel(compileClient, startStaticServer)
-        : series(compileClient, additionFiles.copyStaticGit),
+    compileClient: IsDev ? parallel(compileClient, startStaticServer) : series(compileClient),
 };

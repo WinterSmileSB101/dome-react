@@ -8,6 +8,7 @@ export default class BootstrapModuleFactory {
         return {
             module: bootstrapModule,
             imports: [...castArray(modules)],
+            providers: [],
         };
     }
 }

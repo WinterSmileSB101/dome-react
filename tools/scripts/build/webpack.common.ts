@@ -124,8 +124,8 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
         },
     },
     output: {
-        path: path.resolve(PROJECT_PATH, `./dist/${IsDev ? 'development' : 'publish'}`),
-        filename: `static/scripts/[name].${IsDev ? '' : '[contenthash].'}js`,
+        path: path.resolve(PROJECT_PATH, `./dist/${IsDev ? 'development' : 'publish'}/static`),
+        filename: `scripts/[name].${IsDev ? '' : '[contenthash].'}js`,
     },
     plugins: [
         ...WebpackConfig.fixedPlugins,

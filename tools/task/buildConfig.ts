@@ -1,5 +1,5 @@
 import { glob } from 'glob';
-import gulp from 'gulp';
+import gulp, { series } from 'gulp';
 import path, { join } from 'path';
 import log from 'fancy-log';
 import chalk from 'chalk';
@@ -17,12 +17,13 @@ import { cleanDir } from './clean';
 import Coper from '../utils/copy';
 
 const IsDev = argv['dev'];
+const configGlob = 'config/**/!(*.d).{js,ts,json}';
 
 function buildConfig() {
     log(chalk.green(`build configs...${IsDev ? 'dev' : 'prod'}`));
 
     return gulp
-        .src('config/**/!(*.d).{js,ts,json}', { base: './config' })
+        .src(configGlob, { base: './config' })
         .pipe(toJSON)
         .pipe(gulp.dest(IsDev ? 'dist/development/server/conf' : `dist/conf`));
 }
@@ -36,7 +37,7 @@ function copyConfig() {
 
         log(chalk.green('copy configs...'));
 
-        const globPath = path.resolve(PROJECT_PATH, `./dist/${IsDev ? 'development' : 'publish'}/server/modules/*`);
+        const globPath = path.resolve(PROJECT_PATH, `./dist/${IsDev ? 'development' : 'publish'}/server/`);
         const noDirGlobFiles = glob.sync(globPath, { nodir: true });
         const hasDirGlobFiles = glob.sync(globPath, { nodir: false });
 
@@ -76,7 +77,12 @@ function copyConfig() {
     });
 }
 
+function watchToCompile() {
+    return gulp.watch(configGlob, series(buildConfig, copyConfig));
+}
+
 export default {
     buildConfig: gulp.series(buildConfig, copyConfig),
+    watchConfig: watchToCompile,
     copyConfig,
 };

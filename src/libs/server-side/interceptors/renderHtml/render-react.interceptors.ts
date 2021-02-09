@@ -3,7 +3,7 @@
 
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import PAGE_NAME_METADATA from '@libs/server-side/reflect/metadata';
 import createHtml from '@libs/server-side/render';

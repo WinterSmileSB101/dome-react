@@ -1,12 +1,13 @@
 import { Module, Global, OnModuleInit } from '@nestjs/common';
+import { ServerSideConfigService } from '../services/config-service';
 
 declare let global: any;
 
 @Global()
 @Module({
-    providers: [],
+    providers: [ServerSideConfigService],
     controllers: [], // faq
-    exports: [],
+    exports: [ServerSideConfigService],
 })
 export default class bootstrapModule implements OnModuleInit {
     root: string;

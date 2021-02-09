@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "npm-run-all -p \"build:client -- --dev\" \"watch:server -- --dev\"",
+        "start": "npm-run-all -s clean -p \"build:client -- --dev\" \"watch:server -- --dev\"",
         "build:client": "gulp build:client",
         "build:server": "gulp build:server",
         "watch:server": "gulp watch:server",

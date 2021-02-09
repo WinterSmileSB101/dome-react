@@ -6,4 +6,5 @@ FROM node:current-alpine3.12
 # COPY --from=build /app /app
 COPY . .
 EXPOSE 8231
+ENV NODE_ENV=prod
 CMD ["node","--max-http-header-size=262144"."./modules/app.server.js"]

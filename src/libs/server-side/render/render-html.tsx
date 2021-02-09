@@ -1,14 +1,17 @@
 import React from 'react';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap, map } from 'rxjs/operators';
 import { renderToNodeStream } from 'react-dom/server';
 
 import { RenderModel, RenderOption } from '../types';
 import HtmlStructure from './html-structure';
 import ServerSideRenderError from './error';
 
-const createHtml = (controllerResult: any, options: RenderOption) =>
-    of(renderHtml({ controllerResult, renderOption: options })).pipe(switchMap((_) => _));
+const createHtml = (controllerResult: Observable<any>, options: RenderOption) =>
+    controllerResult.pipe(
+        map((result) => renderHtml({ controllerResult: result, renderOption: options })),
+        switchMap((_) => _), // convert multiple observable to one
+    );
 
 const createBuffer = (renderModel: RenderModel) => (onEnd: (buf: Buffer) => void, onError: (err: Error) => void) => {
     let buf = Buffer.from('<!DOCTYPE html>');

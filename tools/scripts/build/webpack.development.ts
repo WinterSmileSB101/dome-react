@@ -16,8 +16,8 @@ const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common,
     devtool: 'eval-source-map',
     mode: 'development',
     output: {
-        path: path.resolve(PROJECT_PATH, `./dist/development`),
-        filename: `static/scripts/[name].js`,
+        path: path.resolve(PROJECT_PATH, `./dist/development/static`),
+        filename: `scripts/[name].js`,
     },
     plugins: [
         new CleanWebpackPlugin(),
