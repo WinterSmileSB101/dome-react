@@ -1,15 +1,28 @@
+import { isArray } from 'lodash';
 import { RenderModel } from '@libs/server-side/types';
 
 const addScripts = (result: RenderModel): RenderModel => {
     const scriptsMapping = result.renderOption.configGatter('scripts.mapping');
+    result.injectedScripts = [];
 
-    result.injectedScripts = Object.keys(scriptsMapping)
+    Object.keys(scriptsMapping)
         .filter((key) => [result.renderOption.pageName].includes(key))
-        .map((key) => {
+        .forEach((key) => {
             const script = scriptsMapping[key];
-            const scriptUrl = script?.js ?? script;
 
-            return { src: scriptUrl, type: 'linkScript' };
+            if (isArray(script?.js)) {
+                // link script
+                script.js.forEach((j: string) => {
+                    result.injectedScripts.push({
+                        src: j,
+                        type: 'linkScript',
+                        props: { async: !!j?.includes(result.renderOption?.pageName) }, // if is this page,we need async to load.
+                    });
+                });
+            } else {
+                // inner script
+                result.injectedScripts.push({ innerScript: script.js, type: 'innerScript' });
+            }
         });
 
     return result;

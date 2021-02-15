@@ -44,11 +44,12 @@ const getMatchExtension = (name: string, configBasePath: string, environment?: s
     let extension;
 
     supportConfigExtensions.some((sce) => {
-        if (!sce.extension.startsWith('.')) {
-            sce.extension = `.${sce.extension}`;
+        const currentSce = { ...sce };
+        if (!currentSce.extension.startsWith('.')) {
+            currentSce.extension = `.${currentSce.extension}`;
         }
 
-        const fileWithExtension = `${name}${sce.extension}`;
+        const fileWithExtension = `${name}${currentSce.extension}`;
 
         const match = fs.existsSync(
             environment && environment.trim().length > 0
@@ -56,7 +57,7 @@ const getMatchExtension = (name: string, configBasePath: string, environment?: s
                 : path.join(PROJECT_PATH, configBasePath, `${fileWithExtension}`),
         );
 
-        extension = match ? sce : extension;
+        extension = match ? currentSce : extension;
 
         return match;
     });
@@ -72,6 +73,10 @@ const getConfig = (configName: string, configBasePath = '/config'): any => {
     configName = replaceAllSupportExtension(configName);
 
     const matchExtension = getMatchExtension(configName, configBasePath);
+
+    if (!matchExtension) {
+        return undefined;
+    }
 
     const fileName = `/${configName}${matchExtension.extension}`;
 

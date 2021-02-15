@@ -1,3 +1,4 @@
+import { PageResourceMapping } from './config/config.type';
 /* eslint-disable import/no-extraneous-dependencies */
 import { merge } from 'webpack-merge';
 import path from 'path';
@@ -9,6 +10,8 @@ import { UnionWebpackConfigWithDevelopmentServer } from '../types';
 
 import AllConst from '../const';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import { ResourceNotBuildInMapping } from './config/page.resource';
+import { getConfig } from '../utils';
 
 const { PROJECT_PATH, IS_DEV, STATIC_PATH_DEV } = AllConst.ProjectConfig;
 
@@ -26,16 +29,32 @@ const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common,
             path: path.resolve(PROJECT_PATH, './dist/development/server/conf'),
             filename: 'scripts.mapping.json',
             processOutput: function (mapping) {
+                console.log('build.........scripts');
+
                 const scripts = {};
 
                 const scriptPath = STATIC_PATH_DEV?.endsWith('/') ? STATIC_PATH_DEV : STATIC_PATH_DEV + '/';
+
+                const pageResourceConfig = getConfig(
+                    'page.resource.ts',
+                    './tools/scripts/webpack/config',
+                ) as PageResourceMapping;
                 for (let key in mapping) {
-                    if (!!mapping[key]?.js) {
-                        scripts[key] = { js: `${scriptPath}${mapping[key]?.js}` };
+                    if (!ResourceNotBuildInMapping.includes(key) && !!mapping[key]?.js) {
+                        const resources = pageResourceConfig[key]?.scripts;
+                        const currentScripts: string[] = [];
+                        // push main resource into currentScripts
+                        currentScripts.push(`${scriptPath}${mapping[key]?.js}`);
+
+                        // push other special script into currentScripts
+                        for (let resource in resources) {
+                            if (!!mapping[resource]?.js) {
+                                currentScripts.push(`${scriptPath}${mapping[resource]?.js}`);
+                            }
+                        }
+                        scripts[key] = { js: currentScripts };
                     }
                 }
-
-                console.log('build.........scripts');
 
                 return `${JSON.stringify(scripts, null, 2)}`;
             },

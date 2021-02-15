@@ -11,6 +11,9 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import common from './webpack.common';
 import { UnionWebpackConfigWithDevelopmentServer } from '../types';
 import AllConst, { WebpackConfig } from '../const';
+import { getConfig } from '../utils';
+import { PageResourceMapping } from './config/config.type';
+import { ResourceNotBuildInMapping } from './config/page.resource';
 
 const { PROJECT_PATH, STATIC_PATH_PRD } = AllConst.ProjectConfig;
 
@@ -25,9 +28,25 @@ const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common,
             processOutput: function (mapping) {
                 const scripts = {};
                 const scriptPath = STATIC_PATH_PRD?.endsWith('/') ? STATIC_PATH_PRD : STATIC_PATH_PRD + '/';
+
+                const pageResourceConfig = getConfig(
+                    'page.resource.ts',
+                    './tools/scripts/webpack/config',
+                ) as PageResourceMapping;
                 for (let key in mapping) {
-                    if (!!mapping[key]?.js) {
-                        scripts[key] = { js: `${scriptPath}${mapping[key]?.js}` };
+                    if (!ResourceNotBuildInMapping.includes(key) && !!mapping[key]?.js) {
+                        const resources = pageResourceConfig[key]?.scripts;
+                        const currentScripts: string[] = [];
+                        // push main resource into currentScripts
+                        currentScripts.push(`${scriptPath}${mapping[key]?.js}`);
+
+                        // push other special script into currentScripts
+                        for (let resource in resources) {
+                            if (!!mapping[resource]?.js) {
+                                currentScripts.push(`${scriptPath}${mapping[resource]?.js}`);
+                            }
+                        }
+                        scripts[key] = { js: currentScripts };
                     }
                 }
 

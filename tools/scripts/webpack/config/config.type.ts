@@ -10,3 +10,9 @@ export type PageMappingConfig = {
     name: string;
     path: string;
 };
+
+export type PageResource = { vendors?: boolean; [key: string]: boolean };
+
+export type PageResourceMapping = {
+    [key: string]: { scripts?: PageResource; styles?: PageResource };
+};

@@ -21,7 +21,7 @@ const { PROJECT_PATH } = AllConst.ProjectConfig;
 const { getCssLoader } = AllUtils.WebpackUtils;
 
 const getEntry = (): PageMapping => {
-    const pageConfig = getConfig('page.config.ts', './tools/scripts/webpack/config') as PageMapping;
+    const pageConfig = getConfig('page.entry.ts', './tools/scripts/webpack/config') as PageMapping;
 
     const pageMapping: PageMapping = {};
     Object.keys(pageConfig).forEach((key) => {
@@ -196,7 +196,7 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
             cacheGroups: {
                 vendors: {
                     test: /[/\\]node_modules[/\\]/,
-                    minChunks: 1,
+                    minChunks: 2,
                     priority: -5,
                     name: 'vendors',
                 },
