@@ -1,5 +1,7 @@
+import { ConfigGatter } from '@libs/common/config-gatter';
 import { ComponentType } from 'react';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { HtmlScriptProps } from '../render/detailTag/html-scripts';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type ControllerMethod = Function & {
@@ -7,6 +9,7 @@ type ControllerMethod = Function & {
 };
 
 type RenderOption = {
+    configGatter: (configName: string) => any;
     rootElement: ComponentType;
     pageName: string;
     request: FastifyRequest<any>;
@@ -14,6 +17,8 @@ type RenderOption = {
 };
 
 type RenderModel = {
+    metaList?: Meta[];
+    injectedScripts?: HtmlScriptProps[];
     controllerResult: any;
     renderOption: RenderOption;
 };

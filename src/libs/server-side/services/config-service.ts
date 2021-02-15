@@ -1,4 +1,4 @@
-import ConfigGatter from '@libs/common/config-gatter';
+import { ConfigGatter } from '@libs/common/config-gatter';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class ServerSideConfigService {
         this.configGatter = new ConfigGatter();
     }
 
-    public get() {
-        this.configGatter.getAppsettings();
+    public get(configName: string): any {
+        return this.configGatter.getConfig(configName);
     }
 }

@@ -1,4 +1,3 @@
-import { PATH_METADATA } from '@nestjs/common/constants';
 import { ComponentType } from 'react';
 
 import { ControllerMethod } from '../types';

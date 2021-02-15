@@ -1,23 +1,30 @@
 import React from 'react';
-import { Observable, of } from 'rxjs';
-import { switchMap, tap, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 import { renderToNodeStream } from 'react-dom/server';
 
 import { RenderModel, RenderOption } from '../types';
 import HtmlStructure from './html-structure';
 import ServerSideRenderError from './error';
+import { addScripts } from './pipes';
 
 const createHtml = (controllerResult: Observable<any>, options: RenderOption) =>
     controllerResult.pipe(
-        map((result) => renderHtml({ controllerResult: result, renderOption: options })),
+        map((result) => addScripts({ controllerResult: result, renderOption: options })),
+        map((result) => renderHtml(result)),
         switchMap((_) => _), // convert multiple observable to one
     );
 
 const createBuffer = (renderModel: RenderModel) => (onEnd: (buf: Buffer) => void, onError: (err: Error) => void) => {
+    console.log(renderModel);
+
     let buf = Buffer.from('<!DOCTYPE html>');
 
     const stream = renderToNodeStream(
-        <HtmlStructure.HtmlStructure bodyElement={renderModel?.renderOption?.rootElement} headOption={undefined} />,
+        <HtmlStructure.HtmlStructure
+            bodyElement={renderModel?.renderOption?.rootElement}
+            headOption={{ MetaList: renderModel.metaList, InjectedScripts: renderModel.injectedScripts }}
+        />,
     );
 
     stream.on('data', (chunk) => {

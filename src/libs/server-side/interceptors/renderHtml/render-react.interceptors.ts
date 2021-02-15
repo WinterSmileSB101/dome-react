@@ -1,3 +1,4 @@
+import { ConfigGatter } from '@libs/common/config-gatter';
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -9,9 +10,14 @@ import PAGE_NAME_METADATA from '@libs/server-side/reflect/metadata';
 import createHtml from '@libs/server-side/render';
 import { ControllerMethod, RenderOption } from '@libs/server-side/types';
 import { FastifyReply } from 'fastify';
+import { ServerSideConfigService } from '@libs/server-side/services/config-service';
+
+import METADATA from '../../reflect/metadata';
 
 @Injectable()
 export class RenderReactInterceptor implements NestInterceptor {
+    constructor(private configGatter: ServerSideConfigService) {}
+
     intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | Promise<Observable<any>> {
         const element = (context.getHandler() as ControllerMethod).RootReactElement;
         if (!element) {
@@ -20,9 +26,10 @@ export class RenderReactInterceptor implements NestInterceptor {
 
         const request = context.switchToHttp().getRequest();
         const response = context.switchToHttp().getResponse() as FastifyReply;
-        const pageName = Reflect.getMetadata(PAGE_NAME_METADATA, context.getHandler());
+        const pageName = Reflect.getMetadata(METADATA.PAGE_NAME_METADATA, context.getHandler());
 
         const options: RenderOption = {
+            configGatter: (configName: string) => this.configGatter.get(configName),
             rootElement: element,
             pageName,
             request,

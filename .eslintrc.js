@@ -77,5 +77,6 @@ module.exports = {
         'unicorn/better-regex': [WARN],
         'import/prefer-default-export': [OFF],
         'consistent-return': [WARN],
+        'no-useless-constructor': [WARN],
     },
 };

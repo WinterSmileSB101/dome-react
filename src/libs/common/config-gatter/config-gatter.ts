@@ -1,7 +1,8 @@
+import { Injectable } from '@nestjs/common';
 import { readJsonSync, existsSync } from 'fs-extra';
 import path from 'path';
 import { EnvironmentParameters, getEnv } from '../Enviroment';
-import { readFile, readFileSync } from '../file-opreater';
+import { readFileSync } from '../file-opreater';
 import { Appsettings } from '../modules/config.type';
 
 function merge(fromConfig: any, toConfig: any) {
@@ -18,21 +19,22 @@ function merge(fromConfig: any, toConfig: any) {
 
 function getConfig(name: string, specialPath: string, env: 'dev' | 'prod'): any {
     try {
-        const baseFile = readJsonSync(path.join(specialPath, name))?.default;
+        const baseFile = readJsonSync(path.join(specialPath, name));
+        const commonFile = baseFile?.default ?? baseFile;
         const additionFilePath = path.join(specialPath, env, name);
 
         if (existsSync(additionFilePath)) {
             const additionFile = additionFilePath?.length > 0 && readFileSync(additionFilePath);
-            return merge(baseFile, additionFile);
+            return merge(commonFile, additionFile);
         }
-        return baseFile;
+        return commonFile;
     } catch (error) {
         console.log('get config:', name, 'Error:', error);
         return {};
     }
 }
 
-export default class ConfigGatter {
+export class ConfigGatter {
     private readonly env: 'dev' | 'prod';
 
     private readonly rootPath: string;
@@ -47,5 +49,13 @@ export default class ConfigGatter {
 
     public getAppsettings() {
         console.log(getEnv(EnvironmentParameters.ROOT_PATH));
+    }
+
+    public getConfig<T = any>(configName: string): T {
+        return getConfig(
+            `${configName}${configName?.trim()?.endsWith('.json') ? '' : '.json'}`,
+            path.join(this.rootPath, './conf'),
+            this.env,
+        ) as T;
     }
 }

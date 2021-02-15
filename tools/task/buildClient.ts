@@ -5,9 +5,9 @@ import { argv } from 'yargs';
 import { parallel, series } from 'gulp';
 import additionFiles from './buildAdditionFiles';
 
-import prodConfig from '../scripts/build/webpack.production';
+import prodConfig from '../scripts/webpack/webpack.production';
 
-import devConfig from '../scripts/build/webpack.development';
+import devConfig from '../scripts/webpack/webpack.development';
 import WebpackDevServer from 'webpack-dev-server';
 import AllConst from '../scripts/const';
 

@@ -12,7 +12,7 @@ import common from './webpack.common';
 import { UnionWebpackConfigWithDevelopmentServer } from '../types';
 import AllConst, { WebpackConfig } from '../const';
 
-const { PROJECT_PATH } = AllConst.ProjectConfig;
+const { PROJECT_PATH, STATIC_PATH_PRD } = AllConst.ProjectConfig;
 
 const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common, {
     // devtool: 'none',
@@ -24,9 +24,10 @@ const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common,
             filename: 'scripts.mapping.json',
             processOutput: function (mapping) {
                 const scripts = {};
+                const scriptPath = STATIC_PATH_PRD?.endsWith('/') ? STATIC_PATH_PRD : STATIC_PATH_PRD + '/';
                 for (let key in mapping) {
                     if (!!mapping[key]?.js) {
-                        scripts[key] = { js: mapping[key]?.js };
+                        scripts[key] = { js: `${scriptPath}${mapping[key]?.js}` };
                     }
                 }
 

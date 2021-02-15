@@ -1,3 +1,3 @@
-import ConfigGatter from './config-gatter';
+import { ConfigGatter } from './config-gatter';
 
-export default ConfigGatter;
+export { ConfigGatter };

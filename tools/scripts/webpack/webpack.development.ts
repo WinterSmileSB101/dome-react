@@ -10,7 +10,7 @@ import { UnionWebpackConfigWithDevelopmentServer } from '../types';
 import AllConst from '../const';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 
-const { PROJECT_PATH, IS_DEV } = AllConst.ProjectConfig;
+const { PROJECT_PATH, IS_DEV, STATIC_PATH_DEV } = AllConst.ProjectConfig;
 
 const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common, {
     devtool: 'eval-source-map',
@@ -27,9 +27,11 @@ const developmentConfig: UnionWebpackConfigWithDevelopmentServer = merge(common,
             filename: 'scripts.mapping.json',
             processOutput: function (mapping) {
                 const scripts = {};
+
+                const scriptPath = STATIC_PATH_DEV?.endsWith('/') ? STATIC_PATH_DEV : STATIC_PATH_DEV + '/';
                 for (let key in mapping) {
                     if (!!mapping[key]?.js) {
-                        scripts[key] = { js: mapping[key]?.js };
+                        scripts[key] = { js: `${scriptPath}${mapping[key]?.js}` };
                     }
                 }
 
