@@ -9,7 +9,6 @@ interface HtmlStructureProps {
 
 const HtmlStructure: FC<HtmlStructureProps> = (props) => {
     const BodyEl = props.bodyElement;
-    console.log('render html');
 
     return (
         <>

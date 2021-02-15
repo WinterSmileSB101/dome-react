@@ -16,8 +16,6 @@ const createHtml = (controllerResult: Observable<any>, options: RenderOption) =>
     );
 
 const createBuffer = (renderModel: RenderModel) => (onEnd: (buf: Buffer) => void, onError: (err: Error) => void) => {
-    console.log(renderModel);
-
     let buf = Buffer.from('<!DOCTYPE html>');
 
     const stream = renderToNodeStream(
