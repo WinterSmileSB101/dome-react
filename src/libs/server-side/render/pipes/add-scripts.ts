@@ -2,7 +2,7 @@ import { isArray } from 'lodash';
 import { RenderModel } from '@libs/server-side/types';
 
 const addScripts = (result: RenderModel): RenderModel => {
-    const scriptsMapping = result.renderOption.configGatter('scripts.mapping');
+    const scriptsMapping = result.renderOption.configGatter('resources.mapping');
     result.injectedScripts = [];
 
     Object.keys(scriptsMapping)

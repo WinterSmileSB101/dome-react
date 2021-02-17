@@ -1,5 +1,6 @@
 export enum ModuleRoot {
     home = './src/modules/home',
+    demon = './src/modules/demon',
 }
 
 export type PageMapping = {

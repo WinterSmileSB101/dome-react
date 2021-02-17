@@ -2,4 +2,6 @@
 export enum PageAlias {
     HomeHome = 'HomeHome',
     HomeApp = 'HomeApp',
+    // demon module
+    DemonMInfo = 'DemonMInfo',
 }

@@ -4,6 +4,9 @@ import { PageAlias } from '../../../../src/libs/common';
 import { PageMapping, ModuleRoot } from './config.type';
 
 export default {
-    [PageAlias.HomeHome]: path.join(ModuleRoot.home, 'pages/view/home-page.client.tsx'),
+    [PageAlias.HomeHome]: path.join(ModuleRoot.home, 'views/home-page.client.tsx'),
+
+    // demon module
+    [PageAlias.DemonMInfo]: path.join(ModuleRoot.demon, 'views/machine-info-page.client.tsx'),
     // [PageAlias.HomeApp]: path.join(ModuleRoot.home, 'app.tsx'),
 } as PageMapping;

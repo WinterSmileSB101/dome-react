@@ -3,17 +3,17 @@ import { ReactRootView } from '@libs/server-side/decorators/render';
 import { RenderReactInterceptor } from '@libs/server-side/interceptors';
 import { ServerSideConfigService } from '@libs/server-side/services/config-service';
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
-import { HomeView } from '../views/home-page.server';
+import { MachineInfoView } from '../views/machine-info-page.server';
 
-@Controller()
+@Controller('demon')
 @UseInterceptors(RenderReactInterceptor)
-export default class HomePageController {
+export default class MachineInfoController {
     // eslint-disable-next-line no-useless-constructor
     constructor(private readonly serverSideConfig: ServerSideConfigService) {}
 
-    @ReactRootView(HomeView, PageAlias.HomeHome)
-    @Get('home')
-    public async Home() {
+    @ReactRootView(MachineInfoView, PageAlias.DemonMInfo)
+    @Get('minfo')
+    public async MachineInfo() {
         console.log(process.env.ROOT_PATH);
         // this.serverSideConfig.get();
         return '55555555555';

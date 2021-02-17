@@ -6,13 +6,13 @@ module.exports = {
     ],
     plugins: ['stylelint-order', 'stylelint-declaration-block-no-ignored-properties'],
     rules: {
-        'plugin/stylelint-declaration-block-no-ignored-properties': true,
+        'plugins/stylelint-declaration-block-no-ignored-properties': true,
         'comment-empty-line-before': null,
         'declaration-empty-line-before': null,
         'function-name-case': null,
         'no-descending-specificity': null,
         'no-invalid-double-slash-comments': null,
-        'rule-empty-line-before': 'always',
+        'rule-empty-line-before': null,
     },
     ignoreFiles: ['node_modules/**/*', 'build/**/*'],
 };
