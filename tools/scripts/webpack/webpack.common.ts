@@ -9,9 +9,9 @@ import TerserPlugin from 'terser-webpack-plugin';
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import AssetsPlugin from 'assets-webpack-plugin';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import glob from 'glob-all';
-import PurgeCSSPlugin from 'purgecss-webpack-plugin';
+//import ExtractTextPlugin from 'extract-text-webpack-plugin';
+//import glob from 'glob-all';
+//import PurgeCSSPlugin from 'purgecss-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import { UnionWebpackConfigWithDevelopmentServer } from '../types';

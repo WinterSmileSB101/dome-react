@@ -2,6 +2,7 @@ import { ConfigGatter } from '@libs/common/config-gatter';
 import { ComponentType } from 'react';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { HtmlScriptProps } from '../render/detailTag/html-scripts';
+import { HtmlStyleProps } from '../render/detailTag/html-styles';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type ControllerMethod = Function & {
@@ -19,6 +20,7 @@ type RenderOption = {
 type RenderModel = {
     metaList?: Meta[];
     injectedScripts?: HtmlScriptProps[];
+    injectedStyles?: HtmlStyleProps[];
     controllerResult: any;
     renderOption: RenderOption;
 };

@@ -14,9 +14,10 @@ const HtmlStructure: FC<HtmlStructureProps> = (props) => {
         <>
             <html lang="zh">
                 <HtmlHead
-                    Seo={props.headOption?.Seo}
-                    MetaList={props.headOption?.MetaList}
-                    InjectedScripts={props.headOption?.InjectedScripts}
+                    seo={props.headOption?.seo}
+                    metaList={props.headOption?.metaList}
+                    injectedScripts={props.headOption?.injectedScripts}
+                    injectedStyles={props.headOption?.injectedStyles}
                 />
                 <HtmlBody.HtmlBody>
                     <BodyEl />
