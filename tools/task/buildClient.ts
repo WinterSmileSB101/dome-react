@@ -1,5 +1,5 @@
-import webpack from 'webpack';
 import log from 'fancy-log';
+import webpack from 'webpack';
 import chalk from 'chalk';
 import { argv } from 'yargs';
 import { parallel, series } from 'gulp';

@@ -1,4 +1,4 @@
-import { PageAlias } from '@libs/common';
+import { PageAlias } from '@libs/common/constants';
 import { ReactRootView } from '@libs/server-side/decorators/render';
 import { RenderReactInterceptor } from '@libs/server-side/interceptors';
 import { ServerSideConfigService } from '@libs/server-side/services/config-service';
@@ -16,6 +16,6 @@ export default class MachineInfoController {
     public async MachineInfo() {
         console.log(process.env.ROOT_PATH);
         // this.serverSideConfig.get();
-        return '55555555555';
+        return { initState: { a: '12', b: 456, c: true } };
     }
 }

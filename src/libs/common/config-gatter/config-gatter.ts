@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+// import { Injectable } from '@nestjs/common';
 import { readJsonSync, existsSync } from 'fs-extra';
 import path from 'path';
-import { EnvironmentParameters, getEnv } from '../Enviroment';
+import { EnvironmentParameters, getEnv } from '../enviroment';
 import { readFileSync } from '../file-opreater';
 import { Appsettings } from '../modules/config.type';
 

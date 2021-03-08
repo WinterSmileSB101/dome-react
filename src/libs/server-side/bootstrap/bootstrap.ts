@@ -4,7 +4,7 @@ import metricsPlugin from 'fastify-metrics';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import { NestFactory } from '@nestjs/core';
 
-import { EnvironmentParameters, getEnv, setEnv } from '@libs/common/Enviroment';
+import { EnvironmentParameters, getEnv, setEnv } from '@libs/common/enviroment';
 import { BootstrapOptions } from './bootstrap.interfaces';
 import { CommonExceptionFilter } from '../error-filters';
 

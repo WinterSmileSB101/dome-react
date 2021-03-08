@@ -1,12 +1,14 @@
-body {
-    &,
-    input {
+ {
+    body {
         &,
-        select {
+        input {
             &,
-            textarea {
-                font-family: Open Sans, Helvetica, Arial, sans-serif;
-                line-height: 1.36;
+            select {
+                &,
+                textarea {
+                    font-family: Open Sans, Helvetica, Arial, sans-serif;
+                    line-height: 1.36;
+                }
             }
         }
     }

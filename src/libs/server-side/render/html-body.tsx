@@ -1,7 +1,10 @@
-import React, { FC } from 'react';
+import { AllAppStateContext } from '@libs/common';
+import React, { FC, useContext } from 'react';
+import { WindowScript } from './detailTag/window-script';
 
 interface HtmlBodyProps {
     rootId?: string;
+    initData: any;
 }
 
 const HtmlBody: FC<HtmlBodyProps> = (props) => {
@@ -9,6 +12,10 @@ const HtmlBody: FC<HtmlBodyProps> = (props) => {
 
     return (
         <body>
+            {/* init data from client */}
+            <div>
+                <WindowScript propertyName="initData" content={props?.initData || {}} />
+            </div>
             <div id={rootId}>{props.children}</div>
         </body>
     );

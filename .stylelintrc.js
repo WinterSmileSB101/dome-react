@@ -4,9 +4,9 @@ module.exports = {
         'stylelint-config-rational-order',
         'stylelint-config-prettier', // fix conflict with prettier,need install stylelint-config-prettier, must in last
     ],
-    plugins: ['stylelint-order', 'stylelint-declaration-block-no-ignored-properties'],
+    plugins: ['stylelint-order'], //'stylelint-declaration-block-no-ignored-properties'],
     rules: {
-        'plugins/stylelint-declaration-block-no-ignored-properties': true,
+        //'plugins/stylelint-declaration-block-no-ignored-properties': null,
         'comment-empty-line-before': null,
         'declaration-empty-line-before': null,
         'function-name-case': null,

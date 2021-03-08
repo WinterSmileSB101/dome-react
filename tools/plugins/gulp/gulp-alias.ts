@@ -1,7 +1,44 @@
-import { isArray } from 'lodash';
+import { isArray, trimEnd } from 'lodash';
 import path from 'path';
 import through from 'through2';
-import trimStart from '../../../src/libs/common';
+import trimStart from '../../../src/libs/common/utils/string.util';
+
+const findSelfLevels = (target: string[], compareTo: string[]) => {
+    //let level = target?.length + 1;
+    let matchLevel = 0;
+
+    // console.log('pa');
+    // console.log(target);
+
+    // console.log('pb');
+    // console.log(compareTo);
+
+    for (let i = 0; i < target?.length ?? 0; i++) {
+        const isContinue = target[i] === compareTo[i];
+
+        if (!isContinue) {
+            break;
+        }
+
+        matchLevel = i + 1;
+        //level = target?.length - (i + 1);
+    }
+
+    return { levels: target?.length - matchLevel || 1, matchLevels: matchLevel };
+};
+
+const findAllMatch = (target: string, matchRe: string, groupIndex: number = 0) => {
+    const results = [];
+    let match: RegExpExecArray;
+
+    const reg = new RegExp(matchRe, 'gi');
+
+    while ((match = reg.exec(target))) {
+        results.push(match[groupIndex]);
+    }
+
+    return results;
+};
 
 const getRelativePath = (levels: number) => {
     // levels===1 ===> ./
@@ -50,7 +87,11 @@ const getParsedPaths = (paths: { [key: string]: string | string[] }, baseDir: st
     // });
 };
 
-exports.castAlias = function replaceAlias(alias: { [key: string]: string | string[] }, baseDir: string) {
+exports.castAlias = function replaceAlias(
+    alias: { [key: string]: string | string[] },
+    baseDir: string,
+    specialStartChar: string = '@',
+) {
     const allPathKeys = Object.keys(alias ?? {});
 
     const allParsedPaths = getParsedPaths(alias, baseDir);
@@ -80,25 +121,62 @@ exports.castAlias = function replaceAlias(alias: { [key: string]: string | strin
             // console.log(file.base);
             // console.log(file.relative); // relative path
             let fileContents = String(file.contents);
-            //console.log(file.relative)
-            const levels = file.relative.split(path.sep)?.length || 1;
-            allParsedPaths.forEach((path) => {
-                if (new RegExp(`([from ]|[require(])(["]|['])${path.key}.*["|']`).test(fileContents)) {
-                    const pathPrefix = getRelativePath(levels);
-                    //console.log(path.key,pathPrefix,path.value);
 
-                    fileContents = fileContents?.replace(
-                        new RegExp(`(['|"])${path.key}`, 'gi'),
-                        `$1${pathPrefix + path.value}`,
+            const spitedFilePath = file.relative.split(path.sep) as [];
+            allParsedPaths.forEach((parsedPath) => {
+                if (new RegExp(`(?:[from ]|[require(])(?:["]|['])${parsedPath.key}.*["|']`).test(fileContents)) {
+                    const allMatchContents = findAllMatch(
+                        fileContents,
+                        `(?:[from ]|[require(])(?:["]|['])(${parsedPath.key}.*)["|']`,
+                        1,
                     );
 
-                    // console.log('fileContents');
-                    // console.log(fileContents);
+                    allMatchContents.forEach((match: string) => {
+                        const spitedMatches = match.slice(1)?.split('/');
+
+                        const levels = findSelfLevels(spitedFilePath, spitedMatches);
+                        const completelyMatch =
+                            levels.matchLevels !== 0 && levels.matchLevels === spitedMatches?.length;
+
+                        const matchPaths = completelyMatch
+                            ? spitedMatches
+                            : spitedFilePath?.slice(0, levels.matchLevels);
+                        const matchPath = matchPaths?.join('/');
+                        // get all prefix pat like ../../
+                        const pathPrefix = getRelativePath(levels.levels);
+
+                        // if (file.relative.includes('app.server.ts')) {
+                        //     console.log(file.relative);
+                        //     console.log(matchPath);
+                        //     console.log(levels);
+                        //     console.log(match);
+                        //     console.log(pathPrefix);
+                        // }
+
+                        // use match paths to match and replace again, @ is default
+
+                        fileContents = fileContents?.replace(new RegExp(`(['|"])${match}`, 'gi'), (contentMatcher) => {
+                            // if (file.relative.includes('app.server.ts')) {
+                            //     console.log(
+                            //         'match:',
+                            //         contentMatcher.replace(
+                            //             `${specialStartChar}${matchPath}${
+                            //                 completelyMatch || matchPath.length === 0 ? '' : '/'
+                            //             }`,
+                            //             completelyMatch ? trimEnd(pathPrefix, '/') : pathPrefix,
+                            //         ),
+                            //     );
+                            // }
+
+                            return contentMatcher.replace(
+                                `${specialStartChar}${matchPath}${
+                                    completelyMatch || matchPath.length === 0 ? '' : '/' // completelyMatch means completely replace,so not need /,matchPath length is 0,means need replace @,so not need /
+                                }`,
+                                completelyMatch ? trimEnd(pathPrefix, '/') : pathPrefix,
+                            );
+                        });
+                    });
                 }
-                // else {
-                //     console.log('not path');
-                //     console.log(file.relative);
-                // }
             });
 
             file.contents = Buffer.from(fileContents, encoding);

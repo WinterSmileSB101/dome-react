@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import path from 'path';
-import { PageAlias } from '../../../../src/libs/common';
+import { PageAlias } from '../../../../src/libs/common/constants';
 import { PageMapping, ModuleRoot } from './config.type';
 
 export default {

@@ -30,8 +30,6 @@ function compileTS() {
     const tsProject = ts.createProject('tsconfig.json');
 
     const baseDir = 'src';
-    // eslint-disable-next-line no-shadow
-    //const compileGlob = 'src/**/*.{ts,tsx,js,jsx}';
 
     console.log('build server');
 

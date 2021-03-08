@@ -1,4 +1,4 @@
-import { PageAlias } from '@libs/common';
+import { PageAlias } from '@libs/common/constants';
 import { ReactRootView } from '@libs/server-side/decorators/render';
 import { RenderReactInterceptor } from '@libs/server-side/interceptors';
 import { ServerSideConfigService } from '@libs/server-side/services/config-service';
