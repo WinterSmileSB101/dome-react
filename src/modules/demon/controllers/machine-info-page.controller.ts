@@ -14,8 +14,7 @@ export default class MachineInfoController {
     @ReactRootView(MachineInfoView, PageAlias.DemonMInfo)
     @Get('minfo')
     public async MachineInfo() {
-        console.log(process.env.ROOT_PATH);
         // this.serverSideConfig.get();
-        return { initState: { a: '12', b: 456, c: true } };
+        return { initData: { a: '12', b: 456, c: true } };
     }
 }

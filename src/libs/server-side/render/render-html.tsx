@@ -19,7 +19,7 @@ const createBuffer = (renderModel: RenderModel) => (onEnd: (buf: Buffer) => void
                 injectedScripts: renderModel.injectedScripts,
                 injectedStyles: renderModel.injectedStyles,
             }}
-            initData={renderModel.controllerResult?.initState}
+            initData={renderModel.controllerResult?.initData}
         />,
     );
 
