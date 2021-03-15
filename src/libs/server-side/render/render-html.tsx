@@ -21,6 +21,7 @@ const createBuffer = (renderModel: RenderModel) => (onEnd: (buf: Buffer) => void
                 injectedScripts: renderModel.injectedScripts,
                 injectedStyles: renderModel.injectedStyles,
             }}
+            windowScripts={renderModel.windowScripts}
             initData={renderModel.controllerResult?.initData}
         />,
     );
@@ -30,7 +31,7 @@ const createBuffer = (renderModel: RenderModel) => (onEnd: (buf: Buffer) => void
     });
 
     stream.on('error', (err) => {
-        console.log('error', err);
+        console.log('server error in render html', err);
         onError(new ServerSideRenderError.ServerSideRenderError(err));
     });
 

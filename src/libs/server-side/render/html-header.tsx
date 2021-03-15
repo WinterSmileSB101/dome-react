@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 import React, { FC } from 'react';
 
 import { HeaderOption, Meta, SEO } from '../types';
@@ -13,8 +14,6 @@ type HeadProps = HeaderOption & {
 };
 
 const HtmlHead: FC<HeadProps> = (props) => {
-    console.log(props);
-
     return (
         <head>
             {props?.seo?.title?.length > 0 && <title>{props?.seo?.title}</title>}

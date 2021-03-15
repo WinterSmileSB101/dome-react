@@ -33,3 +33,8 @@ export type CommonConfig = {
 export type DomainConfig = {
     baseDomain: string;
 };
+
+export type SiteConfig = {
+    favicon: string;
+    headerLogo: string;
+};
