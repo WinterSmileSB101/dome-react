@@ -3,10 +3,11 @@ import React, { FC, useEffect } from 'react';
 // import { useScrollTop } from '../../hooks/useScrollTop/useScrollTop';
 
 const MachineInfoPage: FC = (props) => {
-    const initData = useInitData();
+    const initData = useInitData() as any;
+    console.log(initData);
     return (
         <>
-            <h1>111111111111</h1>
+            <h1>asdasdasd</h1>
             <button
                 type="button"
                 onClick={() => {

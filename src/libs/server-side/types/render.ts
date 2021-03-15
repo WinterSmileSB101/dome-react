@@ -9,6 +9,11 @@ type ControllerMethod = Function & {
     RootReactElement: ComponentType;
 };
 
+type HeaderOption = {
+    icon: string;
+    sloganLogo?: string;
+};
+
 type RenderOption = {
     configGatter: (configName: string) => any;
     rootElement: ComponentType;
@@ -23,6 +28,7 @@ type RenderModel = {
     injectedStyles?: HtmlStyleProps[];
     controllerResult: any;
     renderOption: RenderOption;
+    headerOption?: HeaderOption;
 };
 
 type Meta = {
@@ -41,4 +47,4 @@ type SEO = {
     robots?: Robots;
 };
 
-export { ControllerMethod, RenderOption, RenderModel, SEO, Meta };
+export { ControllerMethod, RenderOption, RenderModel, SEO, Meta, HeaderOption };

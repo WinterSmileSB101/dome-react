@@ -6,6 +6,7 @@ import { HeadProps, HtmlHead } from './html-header';
 interface HtmlStructureProps {
     bodyElement: ComponentType;
     headOption: HeadProps;
+
     initData: any;
 }
 
@@ -15,12 +16,7 @@ const HtmlStructure: FC<HtmlStructureProps> = (props) => {
     return (
         <AllAppStateProvider values={{ initData: props.initData }}>
             <html lang="zh">
-                <HtmlHead
-                    seo={props.headOption?.seo}
-                    metaList={props.headOption?.metaList}
-                    injectedScripts={props.headOption?.injectedScripts}
-                    injectedStyles={props.headOption?.injectedStyles}
-                />
+                <HtmlHead {...props.headOption} />
                 <HtmlBody.HtmlBody initData={props?.initData}>
                     <BodyEl data-content />
                 </HtmlBody.HtmlBody>

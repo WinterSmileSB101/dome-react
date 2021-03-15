@@ -1,7 +1,29 @@
+ol,
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.header_menus {
+    width: auto;
+    height: 100%;
+    font-size: 0;
+
+    li {
+        position: relative;
+        display: inline-block;
+        height: 100%;
+        font-size: 14px;
+        line-height: 48px;
+        list-style: none;
+    }
+}
+
 .common_header {
     position: relative;
     font-size: 14px;
-    background-color: #fff;
+    background-color: #fafafa;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 

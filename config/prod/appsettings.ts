@@ -1,12 +1,12 @@
 import path from 'path';
-import { Appsettings } from '../src/libs/common/modules/config.type';
+import { Appsettings } from '../../src/libs/common/modules/config.type';
 
 const appsetting: Appsettings = {
     projectConfig: {
         rootPath: path.join(__dirname, '..'),
         publishPath: 'dist',
         serverPath: 'server',
-        staticPath: 'http://localhost:9627',
+        staticPath: 'asdasdsad',
     },
     configs: {
         common: {

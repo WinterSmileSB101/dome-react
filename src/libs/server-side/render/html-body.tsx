@@ -1,5 +1,4 @@
-import { AllAppStateContext } from '@libs/common';
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { WindowScript } from './detailTag/window-script';
 
 interface HtmlBodyProps {

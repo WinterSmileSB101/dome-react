@@ -7,6 +7,7 @@ import { RenderModel, RenderOption } from '../types';
 import HtmlStructure from './html-structure';
 import ServerSideRenderError from './error';
 import { addScripts, addStyles } from './pipes';
+import { addHeader } from './pipes/add-header';
 
 const createBuffer = (renderModel: RenderModel) => (onEnd: (buf: Buffer) => void, onError: (err: Error) => void) => {
     let buf = Buffer.from('<!DOCTYPE html>');
@@ -15,6 +16,7 @@ const createBuffer = (renderModel: RenderModel) => (onEnd: (buf: Buffer) => void
         <HtmlStructure.HtmlStructure
             bodyElement={renderModel?.renderOption?.rootElement}
             headOption={{
+                ...renderModel?.headerOption,
                 metaList: renderModel.metaList,
                 injectedScripts: renderModel.injectedScripts,
                 injectedStyles: renderModel.injectedStyles,
@@ -55,6 +57,7 @@ const createHtml = (controllerResult: Observable<any>, options: RenderOption) =>
         map((result) => ({ controllerResult: result, renderOption: options } as RenderModel)), // convert to renderModel
         map(addScripts),
         map(addStyles),
+        map(addHeader),
         map(renderHtml), // render
 
         switchMap((_) => _), // convert multiple observable to one

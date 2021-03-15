@@ -2,15 +2,16 @@
 import { readJsonSync, existsSync } from 'fs-extra';
 import path from 'path';
 import { EnvironmentParameters, getEnv } from '../enviroment';
-import { readFileSync } from '../file-opreater';
+// import { readFileSync } from '../file-opreater';
 import { Appsettings } from '../modules/config.type';
 
 function merge(fromConfig: any, toConfig: any) {
     const newConfig = { ...fromConfig };
 
     if (!!fromConfig && !!toConfig) {
+        // this will replace all match key without care depth
         Object.keys(toConfig)?.forEach((key) => {
-            fromConfig[key] = toConfig[key];
+            newConfig[key] = toConfig[key];
         });
     }
 
@@ -24,7 +25,8 @@ function getConfig(name: string, specialPath: string, env: 'dev' | 'prod'): any 
         const additionFilePath = path.join(specialPath, env, name);
 
         if (existsSync(additionFilePath)) {
-            const additionFile = additionFilePath?.length > 0 && readFileSync(additionFilePath);
+            const additionFile = additionFilePath?.length > 0 && readJsonSync(additionFilePath)?.default;
+
             return merge(commonFile, additionFile);
         }
         return commonFile;
@@ -44,11 +46,12 @@ export class ConfigGatter {
     constructor() {
         this.env = getEnv(EnvironmentParameters.RUN_ENV) === 'prod' ? 'prod' : 'dev';
         this.rootPath = getEnv(EnvironmentParameters.ROOT_PATH) || '';
+        console.log('env', this.env);
         this.appsettings = getConfig('appsettings.json', path.join(this.rootPath, './conf'), this.env); // app setting are no remote
     }
 
     public getAppsettings() {
-        console.log(getEnv(EnvironmentParameters.ROOT_PATH));
+        return this.appsettings;
     }
 
     public getConfig<T = any>(configName: string): T {

@@ -8,7 +8,16 @@ const CommonTmpl: FC<CommonTmpl> = (props) => {
     const { children } = props;
     return (
         <>
-            <CommonHeader />
+            <CommonHeader
+                menus={[
+                    { name: '工具', active: true },
+                    {
+                        name: 'zhge ',
+                        type: 'customize',
+                        customizeFC: <p>asdasdasdad</p>,
+                    },
+                ]}
+            />
             <div>{children}</div>
         </>
     );

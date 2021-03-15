@@ -82,7 +82,7 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
                 use: getCssLoader(1, IsDev),
             },
             {
-                test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+                test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.ico$/],
                 use: [
                     {
                         loader: 'url-loader',
