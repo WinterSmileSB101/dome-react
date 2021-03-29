@@ -10,7 +10,7 @@ const renderString = <T extends unknown>(Inner: ComponentType, props: T) =>
     html5Header + renderToString(<Inner {...props} />);
 
 const ErrorRender = (reply: FastifyReply, statusCode: number, htmlString: string) =>
-    reply.status(statusCode).header('content-type', 'text/html').send(htmlString);
+    reply.status(statusCode).header('Content-Type', 'text/html;charset=UTF-8').send(htmlString);
 
 export const SSRErrorRender = (args: ErrorArgument) =>
-    ErrorRender(args.response, 500, renderString(HtmlSSRError, { exception: args.exception }));
+    ErrorRender(args.response, 500, renderString(HtmlSSRError, { error: args.exception }));

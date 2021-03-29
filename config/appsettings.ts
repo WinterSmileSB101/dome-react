@@ -6,7 +6,6 @@ const appsetting: Appsettings = {
         rootPath: path.join(__dirname, '..'),
         publishPath: 'dist',
         serverPath: 'server',
-        staticPath: 'http://localhost:9627',
     },
     configs: {
         common: {

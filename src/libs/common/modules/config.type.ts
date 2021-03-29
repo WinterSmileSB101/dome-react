@@ -14,7 +14,6 @@ export type ProjectConfig = {
     rootPath: string;
     publishPath?: string;
     serverPath?: string;
-    staticPath?: string;
 };
 
 export type ConfigContent = {
@@ -35,6 +34,11 @@ export type DomainConfig = {
 };
 
 export type SiteConfig = {
+    domain: {
+        [key: string]: string;
+    };
+
+    staticPath: string;
     favicon: string;
     headerLogo: string;
 };

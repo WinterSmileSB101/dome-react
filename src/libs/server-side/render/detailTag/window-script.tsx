@@ -3,7 +3,7 @@ import serialize from 'serialize-javascript';
 
 export interface WindowScriptProperties {
     propertyName: string;
-    content: string;
+    content: any;
 }
 
 export const WindowScript: FC<WindowScriptProperties> = (props) => (

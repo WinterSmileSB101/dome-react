@@ -1,10 +1,16 @@
 import { EnvironmentParameters, getEnv } from '@libs/common/enviroment';
+import { SiteConfig } from '@libs/common/modules';
 import { RenderModel } from '@libs/server-side/types';
 import { trimEnd } from 'lodash';
 
 const addHeader = (result: RenderModel): RenderModel => {
-    result.headerOption = {
-        icon: `${trimEnd(getEnv(EnvironmentParameters.ROOT_STATIC_HOST), '/')}/assets/favicon.ico`,
+    const siteConfig = result.renderOption.configGatter('site-config') as SiteConfig;
+
+    const host = trimEnd(siteConfig.staticPath, '/');
+    result.headerData = {
+        staticPath: host,
+        icon: `${host}/assets/${siteConfig.favicon}`,
+        sloganLogo: `${host}/assets/${siteConfig.headerLogo}`,
     };
 
     return result;

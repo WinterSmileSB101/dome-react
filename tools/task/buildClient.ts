@@ -10,8 +10,11 @@ import prodConfig from '../scripts/webpack/webpack.production';
 import devConfig from '../scripts/webpack/webpack.development';
 import WebpackDevServer from 'webpack-dev-server';
 import AllConst from '../scripts/const';
+import path, { join } from 'path';
+import Coper from '../utils/copy';
 
 const { SERVER_HOST, SERVER_PORT } = AllConst.ServerConfig;
+const { PROJECT_PATH } = AllConst.ProjectConfig;
 
 const IsDev = argv['dev'];
 
@@ -42,6 +45,21 @@ function compileClient() {
 
                 return rcc;
             }, {});
+
+            const mappingToPath = path.resolve(PROJECT_PATH, `./dist/${IsDev ? 'development' : 'publish'}/server/conf`);
+            const fromDirBase = path.resolve(PROJECT_PATH, './dist');
+            const fromDir = join(fromDirBase, `/${IsDev ? 'development' : 'publish'}/conf`);
+
+            const coper = new Coper({
+                patterns: [
+                    {
+                        from: fromDir,
+                        to: [mappingToPath],
+                    },
+                ],
+            });
+
+            coper.runSync();
 
             reslove(undefined);
 
@@ -93,5 +111,6 @@ function startStaticServer() {
 }
 
 export default {
-    compileClient: IsDev ? parallel(compileClient, startStaticServer) : series(compileClient),
+    compileClient,
+    startStaticServer,
 };

@@ -8,6 +8,7 @@ import additionFiles from './tools/task/buildAdditionFiles';
 
 module.exports = {
     clean: cleanDist,
+    devWatch: series(cleanDist, clientTask.compileClient, clientTask.startStaticServer, serverTask.watchToCompileTS),
     buildConfig: configTask.buildConfig,
     'build:server': serverTask.compileTS,
     'watch:server': serverTask.watchToCompileTS,

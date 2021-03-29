@@ -65,7 +65,7 @@ module.exports = {
         'global-require': [OFF],
         'import/no-dynamic-require': [OFF],
         'unicorn/prevent-abbreviations': [WARN],
-        '@typescript-eslint/explicit-module-boundary-types': [WARN],
+        '@typescript-eslint/explicit-module-boundary-types': [OFF],
         'no-use-before-define': [WARN],
         'react/destructuring-assignment': [WARN],
         'react/prop-types': [WARN],
@@ -78,5 +78,12 @@ module.exports = {
         'import/prefer-default-export': [OFF],
         'consistent-return': [WARN],
         'no-useless-constructor': [WARN],
+        'jsx-a11y/click-events-have-key-events': [OFF],
+        'jsx-a11y/no-noninteractive-element-interactions': [OFF],
+        'no-unused-expressions': [WARN],
+        'no-shadow': [OFF], // this should be off when is typescript,pls using @typescript-eslint/no-shadow for replace
+        '@typescript-eslint/no-shadow': [ERROR],
+        'unicorn/no-reduce': [WARN],
+        'no-extra-boolean-cast': [OFF],
     },
 };

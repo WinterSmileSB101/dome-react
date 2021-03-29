@@ -6,7 +6,6 @@ const appsetting: Appsettings = {
         rootPath: path.join(__dirname, '..'),
         publishPath: 'dist',
         serverPath: 'server',
-        staticPath: 'asdasdsad',
     },
     configs: {
         common: {

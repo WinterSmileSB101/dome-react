@@ -1,4 +1,4 @@
-import { copy, CopyOptions } from 'fs-extra';
+import { copy, CopyOptions, CopyOptionsSync, copySync } from 'fs-extra';
 import path from 'path';
 import log from 'fancy-log';
 import chalk from 'chalk';
@@ -8,7 +8,7 @@ export interface Pattern {
     from: string;
     to: Array<string>;
 
-    options?: CopyOptions;
+    options?: CopyOptions | CopyOptionsSync;
 }
 
 export interface CoperOptions {
@@ -34,7 +34,7 @@ export default class Coper {
         });
     }
 
-    workDir(pattern: Pattern, isLastPattern?: boolean, cb?: () => void) {
+    private workDir(pattern: Pattern, isLastPattern?: boolean, cb?: () => void) {
         if (!pattern) {
             return;
         }
@@ -67,6 +67,52 @@ export default class Coper {
                         cb();
                     }
                 });
+        });
+    }
+
+    runSync() {
+        this.patterns?.forEach((pattern, i) => {
+            this, this.workDirSync(pattern);
+        });
+    }
+
+    private workDirSync(pattern: Pattern) {
+        if (!pattern) {
+            return;
+        }
+
+        let fromPath = path.normalize(pattern?.from);
+
+        if (!path.isAbsolute(fromPath)) {
+            fromPath = path.resolve(this.rootPath, fromPath);
+        }
+
+        pattern?.to?.forEach((to, i) => {
+            let toPath = path.normalize(to);
+            if (!path.isAbsolute(toPath)) {
+                path.resolve(this.rootPath, toPath);
+            }
+
+            try {
+                copySync(fromPath, toPath);
+                log(chalk.green(`已完成拷贝 ==> [${fromPath}] to [${toPath}]`));
+            } catch (err) {
+                log(chalk.red('无法完成本次拷贝，错误原因 ==>', err));
+            }
+
+            // .then(() => {
+            //     log(chalk.green(`已完成拷贝 ==> [${fromPath}] to [${toPath}]`));
+
+            //     if (!!isLastTo && isFunction(cb)) {
+            //         cb();
+            //     }
+            // })
+            // .catch((err) => {
+            //     log(chalk.red('无法完成本次拷贝，错误原因 ==>', err));
+            //     if (!!isLastTo && isFunction(cb)) {
+            //         cb();
+            //     }
+            // });
         });
     }
 }

@@ -3,7 +3,7 @@ import { ConfigGatter } from '@libs/common/config-gatter';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 import PAGE_NAME_METADATA from '@libs/server-side/reflect/metadata';
@@ -12,6 +12,7 @@ import { ControllerMethod, RenderOption } from '@libs/server-side/types';
 import { FastifyReply } from 'fastify';
 import { ServerSideConfigService } from '@libs/server-side/services/config-service';
 
+import { SSRErrorRender } from '@libs/server-side/render/ssr-error-render';
 import METADATA from '../../reflect/metadata';
 
 @Injectable()
@@ -39,10 +40,8 @@ export class RenderReactInterceptor implements NestInterceptor {
         // set to be html
         response.header('Content-Type', 'text/html;charset=UTF-8');
 
-        return createHtml.createHtml(next.handle(), options).pipe(
-            catchError((error) => {
-                throw error;
-            }),
-        );
+        return createHtml
+            .createHtml(next.handle(), options)
+            .pipe(catchError((error) => of(SSRErrorRender({ request, response, exception: error }))));
     }
 }

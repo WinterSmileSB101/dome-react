@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
+import { HeaderOption } from '../types';
 import { WindowScript, WindowScriptProperties } from './detailTag/window-script';
 
 interface HtmlBodyProperties {
     rootId?: string;
     initData: any;
+    headerData?: HeaderOption;
     windowScripts?: WindowScriptProperties[];
 }
 
@@ -15,6 +17,7 @@ const HtmlBody: FC<HtmlBodyProperties> = (props) => {
             {/* init data from client */}
             <div>
                 <WindowScript propertyName="initData" content={props?.initData || {}} />
+                {props.headerData && <WindowScript propertyName="headerData" content={props?.headerData || {}} />}
                 {/* Other scripts */}
                 {props.windowScripts?.length > 0 &&
                     props.windowScripts?.map((script, i) => (

@@ -6,6 +6,7 @@ if (process.env.BROWSER) {
 }
 // eslint-disable-next-line @typescript-eslint/ban-types
 type CommonHeaderProps = {
+    logo: string;
     menus: MenuItemProperties[];
 };
 
@@ -15,6 +16,11 @@ const CommonHeader: FC<CommonHeaderProps> = (props) => {
         <div className="common_header">
             <div className="header_container">
                 <div className="header_content_left">
+                    {props?.logo?.length > 0 && (
+                        <div className="header_logo content_fl">
+                            <img src={props.logo} alt="Home" />
+                        </div>
+                    )}
                     <Menu data={props.menus} />
                 </div>
                 <div className="header_content_middle">middle</div>

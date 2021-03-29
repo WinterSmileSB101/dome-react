@@ -17,7 +17,7 @@ const addScripts = (result: RenderModel): RenderModel => {
                     result.injectedScripts.push({
                         src: j,
                         type: 'linkScript',
-                        props: { async: !!j?.includes(result.renderOption?.pageName) }, // if is this page,we need async to load.
+                        props: { defer: !!j?.includes(result.renderOption?.pageName) }, // if is this page,we need defer to load.
                     });
                 });
             } else {

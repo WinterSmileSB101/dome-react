@@ -29,12 +29,12 @@ export default async function bootstrap(rootModule: ModuleMetadata, options?: Bo
 
     // must set RUN_ENV and ROOT_PATH
     const configer = new ConfigGatter();
-    setEnv(
-        EnvironmentParameters.ROOT_STATIC_HOST,
-        options?.rootStaticHost?.trim()?.length > 0
-            ? options.rootStaticHost.trim()
-            : configer.getAppsettings()?.projectConfig?.staticPath,
-    );
+    // setEnv(
+    //     EnvironmentParameters.ROOT_STATIC_HOST,
+    //     options?.rootStaticHost?.trim()?.length > 0
+    //         ? options.rootStaticHost.trim()
+    //         : configer.getAppsettings()?.projectConfig?.staticPath,
+    // );
 
     const app = await NestFactory.create<NestFastifyApplication>(rootModule, new FastifyAdapter());
 

@@ -129,8 +129,8 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
         },
     },
     output: {
-        path: path.resolve(PROJECT_PATH, `./dist/${IsDev ? 'development' : 'publish'}`),
-        filename: `static/scripts/[name].${IsDev ? '' : '[contenthash].'}js`,
+        path: path.resolve(PROJECT_PATH, `./dist/${IsDev ? 'development' : 'publish'}/static`),
+        filename: `scripts/[name].${IsDev ? '' : '[contenthash].'}js`,
     },
     plugins: [
         ...WebpackConfig.fixedPlugins,
@@ -165,8 +165,8 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
         //     ),
         // }),
         new MiniCssExtractPlugin({
-            filename: 'static/styles/[name].[contenthash:8].css',
-            chunkFilename: 'static/styles/[name].[contenthash:8].css',
+            filename: 'styles/[name].[contenthash:8].css',
+            chunkFilename: 'styles/[name].[contenthash:8].css',
             ignoreOrder: false,
         }),
         new CopyPlugin({
@@ -192,7 +192,7 @@ const config: UnionWebpackConfigWithDevelopmentServer = {
             cwd: process.cwd(),
         }),
         new AssetsPlugin({
-            path: path.resolve(PROJECT_PATH, './dist/development/server/conf'),
+            path: path.resolve(PROJECT_PATH, `./dist/${IsDev ? 'development' : 'publish'}/conf`),
             filename: 'resources.mapping.json',
             processOutput: function (mapping) {
                 console.log('build.........resources');

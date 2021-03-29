@@ -14,6 +14,7 @@ type ControllerMethod = Function & {
 type HeaderOption = {
     icon: string;
     sloganLogo?: string;
+    staticPath?: string;
 };
 
 type RenderOption = {
@@ -33,7 +34,7 @@ type RenderModel = {
 
     controllerResult: any;
     renderOption: RenderOption;
-    headerOption?: HeaderOption;
+    headerData?: HeaderOption;
 };
 
 type Meta = {

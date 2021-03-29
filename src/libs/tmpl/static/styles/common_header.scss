@@ -46,6 +46,21 @@ ul {
             -webkit-box-flex: 0;
             -ms-flex: none;
             flex: none;
+
+            .header_logo {
+                position: relative;
+                max-width: 80px;
+                height: 100%;
+                margin: 0 8px;
+
+                img {
+                    display: block;
+                    width: 80px;
+                    min-width: 80px;
+                    height: 44px;
+                    margin-top: calc((48 - 44) / 2);
+                }
+            }
         }
 
         .header_content_middle {
