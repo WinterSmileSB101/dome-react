@@ -51,6 +51,7 @@ jobs:
       # Install packages
       - name: Install Packages
         run: |
+          node -v
           yarn install
 
       # build
