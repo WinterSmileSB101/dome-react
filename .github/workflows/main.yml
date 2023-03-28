@@ -146,7 +146,7 @@ jobs:
       #    image_version: 'v1.0'
       #    docker_file: '.'
       - name: Build Image & Publish to Docker Repository
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: ${{ secrets.DOCKER_USER }}/dome-react-server
           username: ${{ secrets.DOCKER_USER }}
